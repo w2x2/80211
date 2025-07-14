@@ -1,0 +1,659 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../ieee80211_protocol_study_1_related_materials/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.0">
+    
+    
+      
+        <title>802.11协议精读2:DCF与CSMA/CA - IEEE 802.11 Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.9f615399.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#802112dcfcsmaca" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="IEEE 802.11 Notes" class="md-header__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IEEE 802.11 Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              802.11协议精读2:DCF与CSMA/CA
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="IEEE 802.11 Notes" class="md-nav__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    IEEE 802.11 Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    IEEE 802.11 In-depth
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            IEEE 802.11 In-depth
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_1_related_materials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读1:学习资料整理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    802.11协议精读2:DCF与CSMA/CA
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读2:DCF与CSMA/CA
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    序言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csmaca" class="md-nav__link">
+    CSMA/CA机制
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beb" class="md-nav__link">
+    BEB机制
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rtscts" class="md-nav__link">
+    RTS/CTS模式
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    物理载波监听和虚拟载波监听
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#difssifsslot-time" class="md-nav__link">
+    DIFS，SIFS与Slot time
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    序言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csmaca" class="md-nav__link">
+    CSMA/CA机制
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beb" class="md-nav__link">
+    BEB机制
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rtscts" class="md-nav__link">
+    RTS/CTS模式
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    物理载波监听和虚拟载波监听
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#difssifsslot-time" class="md-nav__link">
+    DIFS，SIFS与Slot time
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="802112dcfcsmaca">802.11协议精读2：DCF与CSMA/CA</h1>
+<p>转载自: <a href="https://zhuanlan.zhihu.com/p/20721272">802.11协议精读2：DCF与CSMA/CA - 知乎</a></p>
+<h2 id="_1">序言</h2>
+<p>在初始802.11的MAC层中，分成了两种基本工作模式：</p>
+<ul>
+<li>DCF（Distributed Coordination Function）</li>
+<li>PCF（Point Coordination Function）</li>
+</ul>
+<p>其中，由于DCF具有良好的分布式特性，从而应用更加广泛，而PCF模式则较为少用。在802.11e协议中，DCF被扩展为<strong>EDCA模式</strong>，PCF模式被扩展为<strong>HCCA模式</strong>。本文所讨论的主要内容即有关<strong>DCF模式</strong>以及其核心<strong>CSMA/CA机制</strong>。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>当前的802.11协议中，除了初始定义的DCF和PCF工作模式外，在802.11e中还定义了EDCA，HCCA，不过本文暂不展开。</p>
+</div>
+<h2 id="csmaca">CSMA/CA机制</h2>
+<p>由于无线信道只有一个冲突域的特性，所以需要设置一种随机接入机制，以避免多个节点同时访问网络所带来的冲突问题，在WiFi协议中，该随机接入机制即是CSMA/CA.</p>
+<p>CSMA/CA的全称是Carrier Sense Multiple Access with Collision Avoidance，即载波侦听多路访问／冲突避免。如果熟悉有线网络的可以知道，在集线器与中继器中也会采用一种CSMA/CD的机制，从协议设计的大思路上，两者是类似的，或者说两个都是基于CSMA机制的，而细节上，两者有很多的出入，在本文中，我们尚不细致讨论两者协议的具体差别，而仅仅叙述CSMA/CA的工作机制。</p>
+<p>为了方便文中讨论，我们首先假定一个网络拓扑环境如下：</p>
+<p><img alt="simple_wireless_network_topology.png" src="../images/simple_wireless_network_topology.png" /></p>
+<p>在该拓扑中，存在一个AP，与两个节点（STA 1与STA 2），如果对于无线术语不是很熟悉的话，可以把AP理解成无线路由器。由于无线环境下的广播特性，若STA 1与STA 2同时向AP发送数据，那么就会在AP处发生冲突，从而两者都无法正确接收，最终传输失败。CSMA/CA就是提供一种避免冲突发生的接入规则。</p>
+<p>接下来我们需要具体描述CSMA/CA的工作机制，为了方便理解，我们这里首先要给出四个概念：</p>
+<ul>
+<li><strong>DIFS与SIFS</strong>：该两种都是属于Inter-frame Spacing（IFS），即帧间间隙。DIFS全称为Distributed Inter-frame Spacing，即分布式帧间间隙，SIFS称为Short inter-frame space，即短帧间间隔。在CSMA/CA中，发一个帧之前，都需要 "等待" 一个相应的帧间间隔，比如发送数据之前至少要等待DIFS时间，发送ACK之前需要等待SIFS时间。</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>在802.11中还存在其他的一些帧间间隔，比如RIFS，PIFS，AIFS，EIFS，本文不再一一赘述。（注：该段落中所提到的等待，不是真正意义上节点什么都不做，具体的功能会在后文相应位置进行描述）</p>
+</div>
+<ul>
+<li>
+<p><strong>Slot Time</strong>：时隙是指的一个时间片段，在CSMA/CA中，节点竞争接入信道之前需要经过相应的随机回退（backoff）过程，其中backoff过程就是由很多个时隙所组成的。</p>
+</li>
+<li>
+<p><strong>Contention window</strong>：竞争窗口是用来让节点选择随机回退计数值（backoff counter）的范围。</p>
+</li>
+<li>
+<p><strong>Backoff</strong>：随机回退过程是指每一个节点在竞争信道时，所经历的随机退避过程。在这一过程开始时，节点首先在竞争窗口中选择一个随机数为基准的随机回退计数值，同时每一个时隙，节点为 "监听" 信道是否空闲，若信道空闲，那么进行一次倒数，即计数值减1，若信道忙，则不进行相应倒数。当该随机回退计数值回退到0时，节点可以发送数据。</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>1.该段落中所提到的监听，不仅包含了物理监听，也包含了虚拟监听机制，具体功能后文相应位置进行描述。
+2.该文中所讨论的一些概念与有线网络中的概念会存在一些区别，我们这里并不加以细节对比，还请见谅</p>
+</div>
+<p>接着，我们利用时序图描述CSMA/CA的具体工作机制：</p>
+<p><img alt="csma_ca_example.png" src="../images/csma_ca_example.png" /></p>
+<p>当STA 1与STA 2相继存在数据，需要在竞争信道进行发送时，其首先需要 "等待" DIFS时间，若DIFS时间内，信道保持空闲状态，那么就可以进行backoff过程。</p>
+<p>若STA 1与STA 2进入backoff过程时，其首先需要从竞争窗口（Contention window）选择一个随机数，在802.11协议中，默认的初始竞争窗口为31，即随机回退计数值的范围即是[0,31]。在上图中，STA 1则是选择了8，而STA 2选择了2。
+在backoff过程中，每经过一个slot time，节点会 "监听" 一次信道，若信道空闲，则相应的随机回退计数器的值减1。如上图中，经过3个slot time后，STA 1的随机倒数计数器从8递减至5，而STA 2相应从2递减至0。</p>
+<p>当节点的随机倒数计数器倒数至0时，节点竞争获得信道，从而可以发送数据。如上图，STA 2获得信道后，发送PACKET A给AP。在AP接收到数据后，会采用CRC机制对数据进行校验，若校验通过，AP会在SIFS后，反馈ACK确认帧。</p>
+<p>当STA 2成功发送完数据， "等待" 了SIFS的时间之后，AP会向节点反馈ACK确认帧。当STA 2成功接收到ACK帧之后，这一次传输完成。</p>
+<p>当这一次传输完成后，节点需要再次 "等待" DIFS的时间后，重新开始backoff过程。若节点刚刚发送完数据，那么在backoff过程开始时，需要重新从竞争窗口中选择一个随机数进行倒数。若节点没有发送数据，那么直接从上一次的倒数结果继续倒数。如上图中，STA 1没有竞争到信道，那么其在第二次的backoff过程中，直接基于上次的5直接进行倒数至4。这样的设计目的是为了保证网络传输的公平性。</p>
+<p><img alt="csma_ca_example_2.png" src="../images/csma_ca_example_2.png" /></p>
+<p>若在上述的第5步中，AP没有成功接收节点的数据，或者AP对数据进行CRC校验错误，那么其不会反馈相应的ACK给节点。节点在ACK timeout之后，则知道对方没有成功接收数据，该ACK timeout时间在理论分析时，一般与ACK接收时间相等，在具体工程设计中，可能会大一点点。那么发送错误的节点，需要等待EIFS时间才可以再次接入信道，EIFS&gt;DIFS，这样是为了避免一些较差的节点持续争抢信道资源。比如图中STA 2即需要在等待EIFS之后，节点首先进行BEB（该机制我们后面详细讨论），然后重新开始backoff过程，而STA 1则直接在DIFS之后进行backoff。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>在这里的描述中，我们所述，在介质忙时，节点通过监听信道，判断介质忙，从而挂起随机回退计数值，这也是很多学术研究中可以看到的常见描述。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>图中的EIFS起始点应为STA2中SIFS的起始点（图中错误，暂时没有做修改），即EIFS=SIFS+ACK+DIFS时间。 （EIFS的问题已经单独抽出来讨论了：<a href="https://zhuanlan.zhihu.com/p/410402175">802.11协议精读39：EIFS的执行机制</a> ）</p>
+</div>
+<p>有关挂起机制，笔者还存在一些理解。我们知道在节点竞争信道的过程中，也有可能会接收数据。由于802.11协议的特殊性，节点只有在完整解调整个数据包之后，经过CRC校验后，才可以完整判断数据帧是不是自己的，从而进行丢包处理。故挂起机制实际上是一种接收机制，即无论信道中的数据帧是不是发给节点的，该节点都需要对此数据帧进行接收，进而判断是否丢弃该帧。故节点由于处于接收状态，从而无法继续进行backoff回退操作，故这里即是处于挂起的动作。</p>
+<p>同时在《CWNA教材第三版》中，这里有可能会产生一种误导的理解，即利用Duration字段，即具体采用NAV机制来完成这里挂起随机回退计数值的工作。在该书中，Duration字段用来保留之后SIFS+ACK的时间，而不是用来作为NAV字段保护该数据帧传输过程中挂起其他节点的。换言之，我们前面所提到的ACK timeout的机制，即是采用数据帧中的duration字段来具体设置的。不过除了CWNA书本上的例子外，现实中笔者没有抓到过数据帧MAC头部中Duration存在填充的情况，在这种默认情况下，ACK timeout可能就是SIFS+ACK的标准时间。</p>
+<h2 id="beb">BEB机制</h2>
+<p>这里BEB机制的全称为 Binary Exponential Back off，即二进制指数退避算法。在CSMA/CA的机制中，还是存在发生冲突的可能性，从而为了避免在CSMA/CA机制下的再次冲突，故这里引入了BEB机制。我们举例进行说明：</p>
+<p><img alt="csma_ca_example_3.png" src="../images/csma_ca_example_3.png" /></p>
+<p>与之前所述CSMA/CA过程类似，在 "等待" DIFS后，STA 1与STA 2从各自的竞争窗口CW中选择一个随机数，不过碰巧的是，两者随机到了一样的数值，如图中，STA 1与STA 2都是随机到了3作为随机回退计数值。在经过3个slot time之后，由于两者同时倒数至0，那么意味着两者会同时发送数据，如图中的红色虚线框表示，在AP处由于两者信号互相干扰，从而都无法正确解码，从而CRC校验错误，即发生冲突。在冲突之后，即若AP处CRC校验失败，则不会给任意节点反馈ACK数据包，故两节点在ACK timeout之后（即总共等待EIFS之后，图中EIFS因为DIFS，这里暂未做修改），准备进入下一次竞争。</p>
+<p>而在正式进入下一次竞争之前，节点需要对竞争窗口（CW）采用BEB机制，按我们之前所述，在初始竞争时，节点的默认CW范围是[0,31]（假设初始窗口是802.11b机制下，即最大31，在802.11a这种，初始窗口就是15）。而如果在节点数较多的情况下，那么就有可能引发之前我们所述的冲突问题，从而我们需要扩大竞争窗口CW。具体在CSMA/CA中，我们则是采用二进制指数退避的方法对竞争窗口CW进行扩展，即发生一次冲突后，那么CW范围就会从 [0,31] 变化到 [0,63] ，如图中，在冲突之后，STA 1重新随机选择50，STA 2重新随机选择32。在802.11中，一共允许回退6次，第7次不倍增窗口，再次尝试重发，若再次失败，则丢包。</p>
+<p>参考CWNA教材，有给出具体每一次回退的CW窗口大小，如下：</p>
+<p><img alt="content_window_example.png" src="../images/content_window_example.png" /></p>
+<h2 id="rtscts">RTS/CTS模式</h2>
+<p>在DCF模式下，我们还需要知道存在两种子模式：</p>
+<ul>
+<li>Basic模式</li>
+<li>RTS/CTS模式</li>
+</ul>
+<p>在之前CSMA/CA讨论中，我们所描述的都是Basic模式，这一章我们理解RTS/CTS模式。</p>
+<p>为了更好的理解RTS/CTS模式，我们首先要介绍无线网络中著名的隐藏终端问题 (hidden terminal problem)。</p>
+<p><img alt="hidden_node_example.png" src="../images/hidden_node_example.png" /></p>
+<p>在上图中，还是只有一个AP和两个节点（STA 1与STA 2）。图中蓝色虚线代表STA 1的发送范围，绿色虚线代表STA 2的发送范围。</p>
+<p>从图中，我们可以得知，由于两个节点的发送范围无法互相覆盖，从而两者在发送数据时，是无法通过物理监听的方法，探测对方是否有发送数据。从而按照我们之前所述的CSMA/CA机制，STA 1 和 STA 2 一直会误认为信道空闲，从而不断倒数，当计时器到0时，则发送数据，如下图：</p>
+<p><img alt="csma_ca_example_5.png" src="../images/csma_ca_example_5.png" /></p>
+<p>在上图中，由于 STA 1 与 STA 2 无法互相监听，即 STA 2 发送数据后，STA 1 还继续进行 backoff 过程，从而继续倒数。当 STA 1 的随机回退计数值倒数至0时，STA 1 也会发送数据。由于 STA 1 与 STA 2 的发送存在重叠区域，即也是发生了冲突，AP无法正确接收数据，即不会反馈 ACK，最终这一轮传输失败。这一轮失败之后，STA 1 与 STA 2 采用 BEB 算法重新选择随机数进行回退，但是由于两者没有办法互相监听，所以很容易再次出现同时传输的现象。所以在隐藏终端的情况下，网络性能最差时是无法传递数据包的，换言之，STA 1 与 STA 2 的吞吐量都趋近于0。</p>
+<p>为了解决这个问题，故在 DCF 中，引入了 RTS/CTS 机制。</p>
+<ul>
+<li>
+<p><strong>RTS</strong>：Request To Send，即请求发送。RTS帧是一个单播帧，没有加密，其 <code>duration</code> 字段中填充包含后续发送过程中总体所需要时间。</p>
+</li>
+<li>
+<p><strong>CTS</strong>：Clear To Send，即信道清除帧。节点在收到CTS后，确认信道是空闲的，可以发送。CTS也是一个单播帧，没有加密，其 <code>duration</code> 字段包含除去RTS以及一个SIFS后，发送过程总体所需要时间。</p>
+</li>
+</ul>
+<p>接着我们采用下图解释RTS/CTS具体的工作方法：</p>
+<p><img alt="rts_cts_exchange_flow" src="../images/rts_cts_exchange_flow.png" /></p>
+<p>在上图中，STA 2 已经倒数至 0，其首先发送RTS数据帧给 AP。若在AP处没有冲突，即AP成功解调出 STA 2 的RTS，AP会在等待SIFS之后发送CTS帧给 STA 2。由于无线信道是一个广播信道，要是帧没有加密的话，那么所有节点都是可以解析其信息的，所以这里AP虽然是发送CTS给 STA 2，不过 STA 1 也可以解析该CTS信息，这也是很多书上写，RTS/CTS都是一个广播过程的原因。</p>
+<p>当 STA 1 接收到CTS之后，该CTS不是我所请求所获得的，或者说，该CTS不是对应发给我的CTS。从而 STA 1 会将CTS数据帧的duration给提出，并设置在自己本地的 NAV（Network Allocation Vector）上。若NAV没有倒数到0，那么其会主动悬挂其随机回退计数值，在NAV没有倒数到0之前，其随机回退计数值不再继续倒数。</p>
+<p>当 STA 2 接收到CTS后，其发现该其是之前发送RTS的反馈。故节点已知信道空闲，在等待SIFS后，STA 2 发送数据。当数据传输完成之后，AP向 STA 2 反馈ACK，从而最终完成一次传输。</p>
+<p>RTS/CTS工作机制对应的时序图如下：</p>
+<p><img alt="csma_ca_example_6.png" src="../images/csma_ca_example_6.png" /></p>
+<p>Remark: 图上画错了，STA 1 在重新backoff的时候，从3直接开始倒数而不是6。</p>
+<p>在上图中，我们可以发现，NAV的部分和我们在CSMA/CA的流程图中的Busy medium是一样的，其区别在于一者是物理载波监听（即之前的Busy medium是由于物理载波监听所引起的），而另者是虚拟载波监听（即NAV是由虚拟载波监听所引起的），在下一节，我们会讨论物理载波监听与虚拟载波监听机制。</p>
+<p>在实际的路由器中，RTS/CTS模式不是以开关的形式存在，而是以 <code>RTS_threshold</code> 的形式存在的。RTS/CTS另外一个思维就是 <strong>"采用小的数据包碰撞，来避免大的数据包碰撞"</strong> ，从而如果数据包太小，那么则不需要采用RTS/CTS机制。设置RTS_threshold的范围一般为 <code>2347</code>，其单位是byte，即如果数据包大小如果大于 <code>2347</code> byte，那么才会采用RTS/CTS模式，在现实应用中，可以根据具体的情况，设置一个最适合的值。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>在本段中，我们所述RTS/CTS着重解决隐藏终端问题，同时RTS/CTS也是利用小数据包碰撞来避免大数据包碰撞的方法，该方法对于在没有隐藏终端，但是节点数很多的网络中，也时很有效果的。同时，本章节中，我们提到采用RTS/CTS模式来设置NAV，这里需要强调的是，RTS/CTS可以设置NAV，但是NAV不是仅仅只能用RTS/CTS来设置，只要数据帧MAC头部的duration字段有数值，那么就可以设置NAV，该机制在802.11协议中，有非常广泛的应用，比如 PCF 的Contention Free周期，EDCA中的<strong>TXOP机制</strong>等。</p>
+</div>
+<h2 id="_2">物理载波监听和虚拟载波监听</h2>
+<p>在这一章节，我们讨论物理载波监听和虚拟载波监听机制，两者是在CSMA/CA过程中同时使用的，在《CWNA第一版》一书中，对此有较好的描述：</p>
+<p><img alt="csmaca_nav_flow" src="../images/csmaca_nav_flow.png" /></p>
+<p>从该图中，我们可以明显看出，物理载波监听和虚拟载波监听是同时执行判断的，其中只要有一个是出于Busy状态，那么就不会触发随机回退计数值减1的过程，换言之，即是挂起了随机回退计数值。从该图中，我们可以明显得知，<strong>虚拟载波监听就是对应的NAV机制</strong>，而<strong>物理载波监听则是对应到了CCA（Clear Channel Assessment）机制</strong>。下面我们着重关注物理载波监听的CCA机制：</p>
+<p>在CSMA/CA中，CCA由<strong>能量检测</strong>和<strong>载波检测</strong>一起完成：</p>
+<ul>
+<li>
+<p><strong>能量检测(Energy Detection)</strong>：</p>
+<p>直接用物理层接收的能量来判断是否有信号进行接入，若信号强度大于 <code>ED_threshold</code>，则认为信道是忙，若小于 <code>ED_threshold</code>，则认为信道是闲。同时该 <code>ED_threshold</code> 的设置与发送功率有关，比如发送功率大于100mW，那么<code>ED_threhold</code> 约为 <code>-80dBm</code>，发送功率在50mW至100mW之间，那么 <code>ED_threshold</code> 应该为 <code>-76dBm</code>。不过至于具体的数值，需要查看其具体所对应版本的802.11协议。</p>
+</li>
+<li>
+<p><strong>载波侦听(Carrier Sense)</strong>：</p>
+<p>载波监听的方法指的是用来识别802.11数据帧的物理层头部（PLCP header）中的preamble部分。简单的说，802.11中的preamble部分采用特定的序列所构造，该序列对于发送方和接收方都是已知的，其用来做帧同步以及符号同步。在实际监听过程中，节点会不断采样信道信号，用其做自相关或者互相关运算，其中自相关在基于OFDM的802.11技术中常用，比如802.11a，而互相关在基于DSSS技术中常用，比如802.11b。与能量检测类似，相关计算值需要与一个阈值进行判断，若大于，则认为检测到了一个信号，若小于则没有检测到。</p>
+</li>
+</ul>
+<p>协议中规定，两种检测方式同时采用，且只要两者检测方式中，有一种判断信道是busy的话，那么就认为信道是busy的，只有两者都认为信道空闲时，那么再判断虚拟载波监听机制是否为0，以上条件都满足时，那么才可以进行backoff倒数。</p>
+<h2 id="difssifsslot-time">DIFS，SIFS与Slot time</h2>
+<p>最后我们浅谈下 <code>DIFS</code>，<code>SIFS</code> 与 <code>Slot time</code> 的具体功能。在前面的叙述中，我们使用 "等待" 这一词来描述节点在 <code>DIFS</code> 与 <code>SIFS</code> 过程中的动作，同时我们描述 <code>slot time</code> 内持续监听信道。在实际过程中，<code>DIFS</code> 与 <code>SIFS</code> 不是纯粹的等待动作，而 <code>slot time</code> 也不是整个周期都是监听信道。我们首先谈谈 <code>slot time</code> 的构造，由于笔者这一部分没有详细翻阅协议，参考一篇论文《WiFi-Nano: Reclaiming WiFi Efficiency Through 800 ns Slots》，其举例一个9us的slot time的组成如下：</p>
+<p><img alt="slot_time" src="../images/slot_time.png" /></p>
+<p>即Slot time由</p>
+<ul>
+<li>电磁波传播时延（Propagation），</li>
+<li>信道检测CCA时间（Clear Channel Assessment）</li>
+<li>以及天线的发送/接收切换（Rx/Tx Hardware Turnaround）</li>
+</ul>
+<p>组成。</p>
+<p>故这里就明确回答了，在一个slot time内不是整个周期都在监听信道，而只有CCA时间这一部分在监听信道。而最后一个天线发送转换也好理解一些，这里我们在说CCA监听信道的过程中，除了为了之前我们所述的backoff过程，实际上节点也在利用CCA来监听，是不是有给我的数据包。如果该数据包不是给我的，那么CCA监听结果就是忙，然后等一个slot以后继续监听。如果监听该数据包是给我的，那么就直接转换到接收状态，而不是继续进行每一个slot监听的动作了。</p>
+<p>同时，这里我们之所以将 <code>DIFS</code>，<code>SIFS</code> 与 <code>Slot time</code> 放在一起讨论，是由于 <span class="arithmatex">\(DIFS = SIFS + 2*Slot\_time\)</span> 。</p>
+<p>SIFS的功能我们可以理解成，包含天线发送接收转换，以及上层处理数据所需要的延迟时间。</p>
+<p>而DIFS中，由于正巧包含了两倍的Slot time，所以很大程度上，在DIFS内，应该执行了两次信道监听过程，但是这两次的监听过程没有触发backoff。只有监听到连续两次信道空闲后，那么DIFS之后才会进行backoff过程，该设计思想应该是源于 <strong>P坚持-CSMA</strong> 的，同时，这个思路也是和我们在讨论物理载波监听和虚拟载波监听中的插图所符合的。类似的，在802.11协议中，其他的部分帧间间隔也是基于slot time和SIFS计算所得，比如</p>
+<p><span class="arithmatex">\(PIFS = SIFS + SLOT\)</span></p>
+<p><span class="arithmatex">\(EIFS = ACK\_time + SIFS + DIFS\)</span></p>
+<p>笔者重新查了下协议，在协议中SIFS和Slot time的组成被定义如下：</p>
+<div class="arithmatex">\[\begin{equation}\begin{split}
+aSIFSTime &amp;=aRXRFDelay（射频延迟） \\
+&amp; + aRXPLCPDelay（物理层头部接收延迟） \\
+&amp; + aMACProcessingDelay（MAC层处理延迟） \\
+&amp; + aRxTxTurnaroundTime（发送接收天线转换时间）
+\end{split}\end{equation}\]</div>
+<div class="arithmatex">\[\begin{equation}\begin{split}
+aSlotTime &amp;=aCCATime（CCA时间）\\
+&amp; + aRxTxTurnaroundTime（发送接收天线转换时间）\\
+&amp; + aAirPropagationTime（传播延迟）\\
+&amp; + aMACProcessingDelay（MAC层处理延迟）
+\end{split}\end{equation}\]</div>
+<p>故基本是和我们之前的描述一样的，细节上还增加了几项，故这里标注一下。</p>
+<p>注：以上就是笔者对于DCF与CSMA/CA的基本理解，大部分内容都是参考笔者前一篇资料总结中所列之参考文献。上述表述中，也许存在一些错误，还请见谅，也有一些细节，并没有在这一篇中展开叙述，有空笔者再继续进行整理。同时，笔者所学有限，若文中出现了的错误的地方，还请指出，谢谢。</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+      
+        <script src="../../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
