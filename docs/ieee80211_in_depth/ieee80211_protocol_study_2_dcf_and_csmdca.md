@@ -179,7 +179,7 @@ Remark: 图上画错了，STA 1 在重新backoff的时候，从3直接开始倒�
 
 故这里就明确回答了，在一个slot time内不是整个周期都在监听信道，而只有CCA时间这一部分在监听信道。而最后一个天线发送转换也好理解一些，这里我们在说CCA监听信道的过程中，除了为了之前我们所述的backoff过程，实际上节点也在利用CCA来监听，是不是有给我的数据包。如果该数据包不是给我的，那么CCA监听结果就是忙，然后等一个slot以后继续监听。如果监听该数据包是给我的，那么就直接转换到接收状态，而不是继续进行每一个slot监听的动作了。
 
-同时，这里我们之所以将 `DIFS`，`SIFS` 与 `Slot time` 放在一起讨论，是由于 $DIFS = SIFS + 2*Slot_time$ 。
+同时，这里我们之所以将 `DIFS`，`SIFS` 与 `Slot time` 放在一起讨论，是由于 $DIFS = SIFS + 2*Slot\_time$ 。
 
 SIFS的功能我们可以理解成，包含天线发送接收转换，以及上层处理数据所需要的延迟时间。
 
@@ -187,13 +187,24 @@ SIFS的功能我们可以理解成，包含天线发送接收转换，以及上�
 
 $PIFS = SIFS + SLOT$
 
-$EIFS = ACK time + SIFS + DIFS$。
+$EIFS = ACK\_time + SIFS + DIFS$
 
 笔者重新查了下协议，在协议中SIFS和Slot time的组成被定义如下：
 
-$aSIFSTime= aRXRFDelay（射频延迟）＋aRXPLCPDelay（物理层头部接收延迟）＋aMACProcessingDelay（MAC层处理延迟） + aRxTxTurnaroundTime（发送接收天线转换时间）$
+\begin{equation}\begin{split}
+aSIFSTime &=aRXRFDelay（射频延迟） \\
+& + aRXPLCPDelay（物理层头部接收延迟） \\
+& + aMACProcessingDelay（MAC层处理延迟） \\
+& + aRxTxTurnaroundTime（发送接收天线转换时间）
+\end{split}\end{equation}
 
-$aSlotTime= aCCATime（CCA时间）＋aRxTxTurnaroundTime（发送接收天线转换时间）＋aAirPropagationTime（传播延迟）＋aMACProcessingDelay（MAC层处理延迟）$
+
+\begin{equation}\begin{split}
+aSlotTime &=aCCATime（CCA时间）\\
+& + aRxTxTurnaroundTime（发送接收天线转换时间）\\
+& + aAirPropagationTime（传播延迟）\\
+& + aMACProcessingDelay（MAC层处理延迟）
+\end{split}\end{equation}
 
 故基本是和我们之前的描述一样的，细节上还增加了几项，故这里标注一下。
 

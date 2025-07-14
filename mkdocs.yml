@@ -18,12 +18,15 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
   - admonition
   - pymdownx.details
-  - pymdownx.arithmatex
+  - pymdownx.arithmatex:
+      generic: true
 
 # 引入 Mermaid 的 JavaScript 库
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js
-  - https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+  - javascripts/config.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 # 可选：自定义 Mermaid 主题或配置
 extra_css:
