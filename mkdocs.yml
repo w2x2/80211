@@ -3,8 +3,8 @@ nav:
   - Home: index.md
   - IEEE 802.11 In-depth:
     - "802.11协议精读1:学习资料整理": ieee80211_in_depth/ieee80211_protocol_study_1_related_materials.md
-    - "802.11协议精读2:DCF与CSMA/CA": ieee80211_in_depth/ieee80211_protocol_study_2_dcf_and_csmdca.md
-
+    - "802.11协议精读2:DCF与CSMA/CA": ieee80211_in_depth/ieee80211_protocol_study_2_dcf_and_csmaca.md
+    - "802.11协议精读3: CSMA/CD与CSMA/CA": ieee80211_in_depth/ieee80211_protocol_study_3_csmacd_vs_csmaca.md
 theme:
   name: material
 
