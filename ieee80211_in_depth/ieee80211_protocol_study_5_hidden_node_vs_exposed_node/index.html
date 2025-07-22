@@ -1,0 +1,614 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../ieee80211_protocol_study_4_pcf/">
+      
+      
+        <link rel="next" href="../ieee80211_protocol_study_6_11b_tx_rx/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.0">
+    
+    
+      
+        <title>802.11协议精读5: 隐藏终端和暴露终端 - IEEE 802.11 Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.9f615399.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#802115" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="IEEE 802.11 Notes" class="md-header__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IEEE 802.11 Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              802.11协议精读5: 隐藏终端和暴露终端
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="IEEE 802.11 Notes" class="md-nav__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    IEEE 802.11 Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    IEEE 802.11 In-depth
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            IEEE 802.11 In-depth
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_1_related_materials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读1:学习资料整理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_2_dcf_and_csmaca/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读2:DCF与CSMA/CA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_3_csmacd_vs_csmaca/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读3: CSMA/CD与CSMA/CA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_4_pcf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读4: PCF工作模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    802.11协议精读5: 隐藏终端和暴露终端
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读5: 隐藏终端和暴露终端
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    序言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    隐藏终端问题
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    暴露终端问题
+  </a>
+  
+    <nav class="md-nav" aria-label="暴露终端问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    物理载波监听引起的暴露终端
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    虚拟载波监听引起的暴露终端
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_6_11b_tx_rx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读6：802.11b的发送过程与接收过程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    序言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    隐藏终端问题
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    暴露终端问题
+  </a>
+  
+    <nav class="md-nav" aria-label="暴露终端问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    物理载波监听引起的暴露终端
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    虚拟载波监听引起的暴露终端
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="802115">802.11协议精读5：隐藏终端和暴露终端</h1>
+<p>转载自: <a href="https://zhuanlan.zhihu.com/p/20780796">802.11协议精读5：隐藏终端和暴露终端 - 知乎</a></p>
+<h2 id="_1">序言</h2>
+<p>在无线通信中，有两个典型的问题，即<code>隐藏终端</code>和<code>暴露终端</code>问题。在 802.11 中，这些问题也是存在，同时也衍生出了一些新类型的隐藏和暴露终端问题。在前面描述DCF模式中，我们已经谈论了的隐藏终端问题。</p>
+<p>实际上，<strong>隐藏终端</strong> 和 <strong>暴露终端</strong> 都是由于 CSMA/CA 中所采用的 <strong>LBT机制</strong> 所引起。隐藏终端是由于监听到的信道空闲而不是真的空闲，故引发冲突。而暴露终端是由于监听到的信道忙而不是真的忙，故其可以传输而不传输。</p>
+<p>在这里，综合之前的论述，我们对一般性的隐藏终端和暴露终端做一个简单的整理。</p>
+<h2 id="_2">隐藏终端问题</h2>
+<p><strong>隐藏终端问题</strong>可以简单定义为：<strong>节点之间无法互相监听对方。但当其不可以同时传输时，其同时传输，从而导致冲突发生。隐藏终端在单个AP（或者单个Receiver）时就有可能发生。</strong></p>
+<p><img alt="hidden_node_example.png" src="../images/hidden_node_example.png" /></p>
+<p>我们基于以上拓扑讨论基本的隐藏终端问题，在该拓扑中，STA1 与 STA2 为两个节点，这两个节点都是关联在 AP 身上。图中蓝色虚线代表 STA1 的发送范围，绿色虚线代表 STA2 的发送范围。</p>
+<p>由于图中 STA1 与 STA2 发送范围无法互相覆盖，即无法通过物理载波监听的方法，探测对方是否有发送数据。从而 STA1 与 STA2 可能会误以为信道空闲，从而同时发送，继而造成冲突。</p>
+<p><img alt="hidden_node_tx_conflict_exchange_flow" src="../images/hidden_node_tx_conflict_exchange_flow.png" /></p>
+<p>如上图所述，根据 DCF 中 CSMA/CA 的工作机制，STA1 与 STA2 在等待 DIFS 之后，分别选取一个随机数进行 Backoff。STA2 由于随机数选择较少，从而首先倒数至 0，并发送数据。当 STA2 发送数据后，由于 STA1 监听不到 STA2 已经占用信道，其依旧误以为信道是空闲的，从而继续进行 backoff。当 STA1 的随机回退计数值倒数至 0 时，STA1 也会发送数据。</p>
+<p>由于 STA1 与 STA2 的同时发送，即 AP 接收时存在重叠区域，即也是发生了冲突，最终这一轮传输失败。当这一轮传输失败之后，STA1 与 STA2 采用 BEB 算法重新选择随机数进行回退，但后续过程中两者依旧无法互相监听，所以很容易再次出现同时传输的现象。在隐藏终端的情况下，网络是近似瘫痪的，换言之，STA1 与 STA2 的吞吐量都趋近于0。</p>
+<p>PS：除了 RTS/CTS模式 是在协议层面解决隐藏终端问题，实际情况下还有很多解决隐藏终端的问题，比如增加客户端功率，消除中间的障碍物，将造成隐藏终端问题的节点或者AP移动个位置之类的，实在不行的话，那么控制下原始 AP 的功率，再添加入一个新的接入点也行，不过最后个方法需要小心一些，因为搞不好会引起下面所述的暴露终端问题。</p>
+<h2 id="_3">暴露终端问题</h2>
+<p>暴露终端问题可以简单定义为：<strong>节点之间能够互相监听对方。但其可以同时传输时，其不传输，从而造成浪费。暴露终端在多个AP（或者多个Receiver）时才有可能发生。</strong></p>
+<p><img alt="exposed_node_topolgy" src="../images/exposed_node_topolgy.png" /></p>
+<p>我们基于以上拓扑讨论基本的隐藏终端问题，在该拓扑中，STA1 与 STA2 为两个节点，其中 STA1 关联在 AP1 上，STA2 关联在 AP2 上。图中蓝色虚线代表 STA1 的发送范围，绿色虚线代表 STA2 的发送范围。</p>
+<p>图中 AP1 处于 STA1 的覆盖范围内，而不再 STA2 的覆盖范围内。AP2 处于 STA2 的覆盖范围，而不在 STA1 的覆盖范围内。换言之，AP1 只能接受到 STA1 的数据，AP2 也只能接收到 STA2 的数据。当 STA1 与 STA2 同时发送时，接收节点 AP1 或者 AP2 处均不会发生冲突，故其是可以同时传输的。但是由于这样的拓扑特殊性以及 DCF 中 CSMA/CA 的工作机制，造成 STA1 与 STA2 无法同时传输，该问题则是暴露终端问题。</p>
+<p>在 CSMA/CA 中，接入是遵守 LBT（Listen Before Talk）机制的。我们在 DCF 的介绍中所述，每一个节点在接入信道之前需要进行 backoff。在该过程内，若信道空闲，则每经过1个slot，随机倒数计数器进行一次倒数。若信道非空闲，则节点不会对随机倒数计数器进行倒数，并对其进行悬挂。只有当其倒数至0时，才可以发起传输。其中信道空闲与否是通过载波监听机制进行判断的，而在DCF中，存在物理载波监听和虚拟载波监听两种模式，这两种监听方式都有可能引起暴露终端问题，以下我们分两种情况进行讨论。（有关 DCF 的接入过程，详细内容请查阅之前的文档）</p>
+<h3 id="_4">物理载波监听引起的暴露终端</h3>
+<p><img alt="exposed_node_problem_with_phy_csma_exchange_flow" src="../images/exposed_node_problem_with_phy_csma_exchange_flow.png" /></p>
+<p>如上图所示，由于 STA1 与 STA2 可以互相监听。由于 STA2 选择了较小的随机数进行倒数，从而其最先倒数至0，并进行发送。当 STA2 首先发送数据包给 AP2 后，STA1 监听信道为忙状态，从而无法发送信息。故根据拓扑而言，STA1 是可以传数据给 AP1 的，但是由于监听 STA2 正在传输，导致信道忙，故 STA1 悬挂随机倒数计数器，无法继续倒数，从而无法传输。</p>
+<p>这里实际上我们还可以更深入了解一下，实际上 STA1 为什么需要在别人传输的时候，悬挂自己的随机倒数计数器。在 CSMA/CD 中，实际上是没有悬挂过程的，只有在 CSMA/CA 中才存在。在 CSMA/CD 中，若信道忙，节点就不停的去监听信道，一旦发现空闲就传输。而在 CSMA/CA 中，节点在中间实际上不是监听信道，而是接收数据。其主要原因在于，STA1 在检测到 STA2 正在传输造成信道忙时，其立刻开始接收该 STA2 的数据，因为 STA1 不知道该数据是否是发给自己的。只有当完整接收数据，CRC 校验通过后，STA1 才可以检查帧 MAC 头部所对应的目的 BSSID 地址，看是否是自己的数据包，若不是才可以丢包。换言之，CSMA/CA中，悬挂实际上是为了接收，从而导致的现象是悬挂而已。</p>
+<h3 id="_5">虚拟载波监听引起的暴露终端</h3>
+<p><img alt="exposed_node_problem_with_nav_exchange_flow.png" src="../images/exposed_node_problem_with_nav_exchange_flow.png" /></p>
+<p>如上图所示，在暴露终端场景中，若 STA2 不仅选择了较小的随机数进行优先倒数，并且其发送的数据包是RTS数据包。当 STA1 识别到该RTS数据包后，其就会被设置为 NAV 状态，无法在后面的过程主动竞争信道，进而无法传输。与之前描述用RTS/CTS解决隐藏终端问题时不同，在解决隐藏终端问题中，NAV 是由 AP 所反馈的CTS帧所进行保护。而这里由于 STA1 与 STA2 能够互相监听，换言之，在暴露终端情况下，STA1 的 NAV 是被 STA2 所发送的RTS帧进行保护的。在 STA1 被 NAV 保护后，其也无法传输，最终导致暴露终端问题。</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+      
+        <script src="../../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

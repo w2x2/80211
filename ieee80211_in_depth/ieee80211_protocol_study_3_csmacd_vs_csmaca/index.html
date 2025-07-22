@@ -1,0 +1,649 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../ieee80211_protocol_study_2_dcf_and_csmaca/">
+      
+      
+        <link rel="next" href="../ieee80211_protocol_study_4_pcf/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.0">
+    
+    
+      
+        <title>802.11协议精读3: CSMA/CD与CSMA/CA - IEEE 802.11 Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.9f615399.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#802113-csmacdcsmaca" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="IEEE 802.11 Notes" class="md-header__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IEEE 802.11 Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              802.11协议精读3: CSMA/CD与CSMA/CA
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="IEEE 802.11 Notes" class="md-nav__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    IEEE 802.11 Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    IEEE 802.11 In-depth
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            IEEE 802.11 In-depth
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_1_related_materials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读1:学习资料整理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_2_dcf_and_csmaca/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读2:DCF与CSMA/CA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    802.11协议精读3: CSMA/CD与CSMA/CA
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读3: CSMA/CD与CSMA/CA
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    序言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csma" class="md-nav__link">
+    CSMA
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csmacd" class="md-nav__link">
+    CSMA/CD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csmacdcsmaca" class="md-nav__link">
+    CSMA/CD与CSMA/CA
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_4_pcf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读4: PCF工作模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_5_hidden_node_vs_exposed_node/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读5: 隐藏终端和暴露终端
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_6_11b_tx_rx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读6：802.11b的发送过程与接收过程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    序言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csma" class="md-nav__link">
+    CSMA
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csmacd" class="md-nav__link">
+    CSMA/CD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csmacdcsmaca" class="md-nav__link">
+    CSMA/CD与CSMA/CA
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="802113-csmacdcsmaca">802.11协议精读3: CSMA/CD与CSMA/CA</h1>
+<p>转载自: <a href="https://zhuanlan.zhihu.com/p/20731045">802.11协议精读3：CSMA/CD与CSMA/CA - 知乎</a></p>
+<h2 id="_1">序言</h2>
+<p>在前一份文档中，我们详细记录了有关 802.11 中 DCF 模式以及其核心 CSMA/CA 的一些内容与细节。对比无线网络，有线网络的集线器和中继器设计中，采用了 CSMA/CD 技术。该技术早期是用来解决有线网络中，共享介质下的多路网络接入问题，该技术仍然在当今的10M/100M半双工网络中使用。在更高的带宽情况下，比如千M网络，则采用<code>全双工技术</code>以代替 CSMA/CD。</p>
+<p>本文主旨是希望能理清 CSMA/CD 和 CSMA/CA 的关系与区别。接下来，我们首先会说明最基础的 CSMA 协议的工作机制，然后我们说明 CSMA/CD 的工作机制，最后，对比前一份文档，我们分析 CSMA/CD 和 CSMA/CA 的区别。</p>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>本文中有关有线网络的理论很多参考自《Ethernet:The Definitive Guide》。</p>
+</div>
+<h2 id="csma">CSMA</h2>
+<p><code>CSMA</code> 的全称是 <code>Carrier Sense Multiple Access</code>，在笔者的理解中，其更趋向于一种理论研究的随机接入协议，或者说，基于其思想诞生了比如 CSMA/CD 与 CSMA/CA 这样的具体协议。CSMA可以分成以下三种：</p>
+<ul>
+<li>1-persistentes CSMA（1坚持-CSMA）</li>
+<li>0-persistentes CSMA（0坚持-CSMA）</li>
+<li>p-persistentes CSMA（p坚持-CSMA）</li>
+</ul>
+<p>从历史上而言，CSMA 实际上是源于<code>aloha协议</code>，为了理清协议的设计思路的脉络关系，我们还是有必要对原始的aloha协议做一个说明。Aloha是为无线工作环境设计的一个协议，其最初的思想很简单：<strong>“一个aloha节点只要有数据的话，该节点就可以立即发送。当该节点数据发送完之后，其需要等待接收方反馈的ACK。若成功接收到ACK之后，那么这一次传输成功。如果没有收到ACK的话，那么这一次传输失败。该aloha节点会认为网络中还存在另外一个aloha节点也在发送数据，所以造成接收方发生了冲突。最后这些冲突的节点会随机选择一个时间进行回退（backoff），以避免下一次冲突。若冲突节点回退完成，其才可以重新进行发送"</strong>。</p>
+<p>实际上从初始的aloha协议中，我们就可以看到现在 CSMA/CA 的影子，网络协议的设计都是符合 KISS 原则的（Keep It Simple and Stupid），所以实际中我们所应用到的网络协议，其思想都不会是特别复杂。基于aloha协议的思想，CSMA 协议对其最大的改进即是引入了<code>LBT</code>机制（Listen Before Talk），在 CSMA 中的 CS（Carrier Sense）即是指 Listen 监听机制。在 LBT 机制下 CSMA 的思想就是：<strong>“CSMA节点在每一次发送之前先监听信道是否是空闲的，如果信道不是空闲的话，那么就不发送数据，等待一会再进行尝试。只有确保是空闲的情况下，才可以发送数据，从而避免打断其他节点正在进行的传输过程"</strong>。</p>
+<p>具体 CSMA 的工作机制关联着我们之前所叙述的三种 CSMA 模式，以下我们分别进行叙述：</p>
+<ul>
+<li>
+<p><strong>1-persistentes CSMA</strong>：“节点需要持续监听信道，一旦节点发现信道空闲后，则立刻发送数据。”。</p>
+</li>
+<li>
+<p><strong>0-persistentes CSMA</strong>：“节点不连续监听信道，若该时刻节点监听信道为busy，那么等待一段时间后，再次进行监听。若节点该时刻监听信道为空闲，则立刻发送数据。”</p>
+</li>
+<li>
+<p><strong>p-persistentes CSMA</strong>：“节点需要持续监听信道，一旦发现信道空闲后，节点以p的概率立刻发送数据，以1-p的概率不发送数据。若节点该时刻不发送数据，那么等待一段时间后，再次进行监听，并以p概率再次发送”。（注：这里所述的p概率可以理解成抛骰子赌大小，如果抛大，那么就发送，反之不发送。其中抛大的概率就是p，而抛小的概率就是1-p）</p>
+</li>
+</ul>
+<p>在以上三种 CSMA 机制中，若节点传输发送冲突，则类似aloha的基本算法，随机等待一个时间之后，再次进行重试。以上，我们分析了 CSMA 的基本工作模式，或者称之为 CSMA 的基本思想，接下来，我们具体讨论有线网络所应用到的 CSMA/CD 协议。</p>
+<h2 id="csmacd">CSMA/CD</h2>
+<p><code>CSMA/CD</code> 的全称是 <code>Carrier Sense Multiple Access with Collision Detection</code>，即<code>基于冲突检测的载波监听多路访问技术</code>。CSMA/CD也是最初802.3中的核心，应用在10M/100M的半双工有线网络中，目前CSMA/CD的应用场景少了很多，大部分都直接基于全双工工作。</p>
+<p>CSMA/CD从思想上应该是源自于 <code>1-坚持CSMA</code>，即 <code>1-persistentes CSMA</code>。在其基础上，加入了CD（Collision Detection）的机制。冲突检测，即 CD 的机制主要是用来发现冲突，并解决冲突的。我们下面描述 CSMA/CD 的具体工作机制：</p>
+<p><strong>“节点发送数据之前需要持续监听信道，一旦节点发现信道空闲，则立刻发送数据。在发送数据的同时，节点持续监听信道，"探测" 是否有别的节点也在该时刻发送数据。</strong></p>
+<p><strong>若传输过程中没有检测到别的节点的传输，那么成功传输。在成功传输后，节点需要等待帧间间隔IFG（interframe gap）时间后，可以进行下一次传输。</strong></p>
+<p><strong>若在传输过程中，探测到别的节点也在传输，那么则检测到冲突。发生冲突后，节点立刻停止当前的传输，并且发送特定的干扰序列（JAM序列），用以加强该次冲突（用以保证其余所有节点都检测到该次冲突），在JAM序列发送完之后，节点随机选择一个时间倒数进行backoff。当backoff完成之后，节点可以尝试再次重传”。</strong></p>
+<p>在上述的描述中，我们可以发现，<code>CSMA/CD</code> 和 <code>1-坚持CSMA</code>是非常相近的，与传统的aloha相比，CSMA/CD 不仅仅添加了 LBT 的机制，还引入了冲突检测（Collision Detection）机制，用以在传输中立刻发现冲突，而不是依靠ACK的反馈来判断是否有冲突发生，从而提高网络效率。在 CSMA 中，我们还需要描述一些细节内容：</p>
+<ul>
+<li>
+<p><strong>载波检测（CS：carrier sense）</strong>：在有线网络中，载波检测实际上即是接收信道上的信息，并加以解析。用这种方式判断共享信道上有没有节点正在传输信息，从而达到监听（listen）的作用。其中载波检测这个名字实际上是从AM/FM接收中来的，即<code>载波</code>就是<strong>携带调制信息的模拟信号</strong>，从而载波监听就是对是不是有AM/FM信号进行侦听。</p>
+</li>
+<li>
+<p><strong>冲突检测（CD：collision detection）</strong>：在一些理论中，介绍冲突检测为 “发送的同时，接收同一个信道上的数据，并比较发送数据Tx与接收数据Rx”。若Tx=Rx，则没有冲突发生，若Tx≠Rx，则识别到一个冲突。在一些工程介绍中，介绍检测冲突的方法是“介质依赖法”。连接段介质（实际上是电缆）拥有传输和接受数据的独立路径（双绞线中有单独的发送和接受回路），冲突检测是在同一个接收段收发器中，借助同时发生在传输和接收数据路径上的活动来完成的。在同轴电缆介质上，收发器通过检测同轴电缆的DC（即直流信号）信号等级来检测冲突。当两个或者多个基站同时传输时，同轴上的平均DC电压可达到触发同轴收发器中的冲突检测电压等级。同轴收发器连续检测同轴电缆上的平均电压等级，若平均电压等级表明，有多个基站同时传输内容后，其会发送JAM信号到以太网接口处。发送JAM信号的这个过程比冲突检测时间较长，多出的时间包含了根据10Mbps以太网上总信号延迟算出的时间（即包含了JAM信号的传输时间）。</p>
+</li>
+<li>
+<p><strong>时隙与捕获效应</strong>：在有线网络中，捕获效应被定义为1个时隙长度内没有冲突发生，同时时隙被定义为 512bit 在 10Mbps 或 100Mbps 网络的发送时间。在有线网络中选择为 512bit 作为一个时隙的参考值，是考量了为发送信号到对端的最大往返时间。该最大往返时间包含了电磁波通过物理层的往返时间以及传输JAM信号所花费的时间。（JAM信号是加强冲突的一个通知信号）。若节点已捕获信道，即已发送512bit，那么对方不一定会来打断你当前的传输，1.即确保对方能检测到你，2.并且反馈的JAM信号也能通知到你。同时，若从电磁波传输的角度而言，512bit在10M中传输的时间换算成电磁波能够传播的距离大约是2800米，512bit在100M中传输的时间换算成电磁波传播的距离大约是200米，对比有线网络的双绞线长度（大约100米）而言，这些参数还是可以接受的。在1000Mbps网络以及其上，都是默认物理层采用全双工模式的，若还是采用CSMA/CD的模式，那么这里的时隙长度会被定义为512byte的长度，不过目前这个可能是学术上的用法，而非协议的定稿。
+重传机制（Backoff与BEB机制）：若节点检测到冲突发生在前512个字节，即一个时隙内，那么节点首先进行backoff，然后进行重传。这里backoff是采用BEB（二进制指数回退算法），即在一个随机窗口内，选择一个随机数并乘以时隙（time slot）进行回退。在第0~10次回退过程中，每回退一次，随机窗口放大一倍，在第11次到第16次过程中，依然进行回退，并尝试重新发送数据包，但是不放大窗口大小，第17次若失败，则丢包。按照一般情况下，冲突不会发生在512字节以后的部分，即已经发生了捕获效应，即节点已经捕获到了信道。不过比如时间不同步这样的一些情况出现，导致冲突发生在512字节之后，貌似是不进行重传，直接丢包的。</p>
+</li>
+</ul>
+<h2 id="csmacdcsmaca">CSMA/CD与CSMA/CA</h2>
+<p>在综述完 CSMA/CD 后，对比我们前一次叙述的 CSMA/CA，我们总结这两者之间的联系和区别。</p>
+<p><strong>联系</strong>：</p>
+<p>CSMA/CD 与 CSMA/CA 机制都从属于CSMA的思路，其核心就是 LBT 机制，换言之，两个在接入信道之前都需要进行监听。当发现信道空闲后，其才可以进行接入。</p>
+<p><strong>区别：</strong></p>
+<ul>
+<li>
+<p><strong>在思想上：</strong></p>
+<p>CSMA/CD 是源自于 <code>1-坚持CSMA</code>，而 CSMA/CA 是源自于 <code>p-坚持CSMA</code>。即 CSMA/CD 是持续监听信道，一旦发现信道空闲，则立刻传输。
+CSMA/CA 是边进行 backoff 回退过程边进行监听，若信道空闲则进行 backoff counter 倒数，否则挂起随机倒数计数器，不进行backoff counter倒数的工作。只有当backoff counter（即随机倒数计数器）回退至0时，其才可发送数据。</p>
+</li>
+<li>
+<p><strong>在冲突检测上：</strong></p>
+<p>CSMA/CD 中是采用<strong>冲突检测+JAM机制</strong>，即边发送边监听实时信道状态，可以在传输过程中，实时判断信道中是否有冲突发生，一旦发现了冲突，则发送JAM信号以加强冲突，其余节点也因识别到该JAM信号，从而停止当前传输。若整个过程中，节点都没有发现冲突以及JAM反馈，那么该次传输成功。</p>
+<p>CSMA/CA 是源自于<strong>aloha的ACK反馈机制</strong>，若接收到对方反馈的ACK后，那么这一次传输成功，否则失败。</p>
+</li>
+<li>
+<p><strong>在监听机制上：</strong></p>
+<p>由于 CSMA/CD 是有线网络，故其监听是直接解调有线介质上的信息，若没有信息，则信道空闲，若存在信息，则信道繁忙。</p>
+<p>在 CSMA/CA 中，不仅引入了物理载波监听与虚拟载波监听这两种技术，同时在物理载波监听中，还分为能量检测（Energy Detection）和载波感知（Carrier sense）。同时该载波感知所指是利用无线帧物理层头部中的固定序列（即preamble），利用已知序列和其做相关运算（自相关或者互相关运算）进行识别。详细的一些内容可以参考上一篇有关 DCF 和 CSMA/CA 的文章。</p>
+</li>
+<li>
+<p><strong>在回退（backoff）机制上：</strong></p>
+<p>在 CSMA/CD 中，回退只有在冲突之后才会发生，节点选择选择一个随机时间进行回退，该随机事件具体是时隙乘以回退窗口内的一个随机数。其中为了避免多次冲突的问题，在每一次冲突后，节点的回退窗口也会执行 BEB 算法，即将回退窗口进行翻倍。在 CSMA/CD 中，回退一共可以进行16次，其中，第 <code>1~9</code> 次存在会对回退窗口进行翻倍，在第 <code>10~16</code> 次中，窗口大小不变（窗口最大1024），再次重试。第 <code>16</code> 次若失败，则进行丢包处理。</p>
+<p>在 CSMA/CA 中，节点的每一次传输之前都需要进行backoff过程。在CSMA/CA的backoff过程中，节点会在每一个slot中对信道进行监听（这里包含物理载波监听和虚拟载波监听），若信道监听为空闲，那么进行backoff，即随机倒数计数器减1，若信道监听为信道忙，则挂起该计数器，只有当该计数值为0时，节点才可以发送数据。在 CSMA/CA 中，若发生冲突后，对竞争窗口（Contention Window）进行BEB操作，在 <code>1~6</code> 次中，窗口大小翻倍，第 <code>6</code> 次时，窗口大小不变（窗口最大也是1024），再次重试，若第7次传输失败，则进行丢包处理。</p>
+</li>
+<li>
+<p><strong>在时隙的定义上：</strong></p>
+<p>在 CSMA/CD 中，时隙被定义在一个固定数据片大小在固定速率的媒介上传输的时间，比如在10M/100M网络中，时隙为512位在10M/100M网络下对应传输的延迟。</p>
+<p>在 CSMA/CA 中，时隙中包含三个方面的内容，即传播延迟，信道检测（CCA）以及收发天线转换。时隙时间具体与其对应的802.11协议版本有关，比如 802.11b 中，时隙即是<code>20us</code>。</p>
+</li>
+<li>
+<p><strong>在捕获效应的定义上：</strong></p>
+<p>在 CSMA/CD 中，捕获效应被定义为节点成功传输1个时隙的数据，从而节点能够确保自己已经捕获了信道，其余节点也都已感知到了这点，从而确保不会有冲突发生。</p>
+<p>在 CSMA/CA 中，捕获效应是指由于信号功率的不同，比如有两个节点同时向接收方发送数据，其中一者信号强度大（即SNR大），一者信号强度小（即SNR小）。在这种情况下，若信号较好的SNR能够达到解调其数据所需最低的SNR阈值的话，那么其是可以解调，即这次传输可以是成功的。直观的理解，我们可以认为一个大嗓门和一个小嗓门同时说话，那么我们是可以听清楚大嗓门的。</p>
+</li>
+</ul>
+<p>以上是总结的一些笔者理解 CSMA/CA 和 CSMA/CD 的区别，其他还存在的一些区别，比如在 802.11 DCF 模式中所采用的 RTS/CTS 机制，在有线网中就不存在或者对应存在区别，在此就不再一一赘述了。</p>
+<p>注：在上述的讨论中，有线网络的部分知识主要是源于《Ethernet:The Definitive Guide》，而无线网络的部分主要来源于笔者的研究经历，在无线网络中，也有想要实现类似于有线网络的 CSMA/CN 的工作机制，笔者的一部分工作也是来源于此，有兴趣可以自行阅读。以上讨论中，如果存在错误，还请见谅。</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+      
+        <script src="../../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
