@@ -5,6 +5,9 @@ nav:
     - "802.11协议精读1:学习资料整理": ieee80211_in_depth/ieee80211_protocol_study_1_related_materials.md
     - "802.11协议精读2:DCF与CSMA/CA": ieee80211_in_depth/ieee80211_protocol_study_2_dcf_and_csmaca.md
     - "802.11协议精读3: CSMA/CD与CSMA/CA": ieee80211_in_depth/ieee80211_protocol_study_3_csmacd_vs_csmaca.md
+    - "802.11协议精读4: PCF工作模式": ieee80211_in_depth/ieee80211_protocol_study_4_pcf.md
+    - "802.11协议精读5: 隐藏终端和暴露终端": ieee80211_in_depth/ieee80211_protocol_study_5_hidden_node_vs_exposed_node.md
+    - "802.11协议精读6：802.11b的发送过程与接收过程": ieee80211_in_depth/ieee80211_protocol_study_6_11b_tx_rx.md
 theme:
   name: material
 
