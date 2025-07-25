@@ -1,0 +1,695 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../ieee80211_protocol_study_7_11ag_tx_rx/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.0">
+    
+    
+      
+        <title>802.11协议精读8: 再论802.11a/g的发送过程与接收过程 - IEEE 802.11 Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.9f615399.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#80211880211ag" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="IEEE 802.11 Notes" class="md-header__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IEEE 802.11 Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              802.11协议精读8: 再论802.11a/g的发送过程与接收过程
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="IEEE 802.11 Notes" class="md-nav__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    IEEE 802.11 Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    IEEE 802.11 In-depth
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            IEEE 802.11 In-depth
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_1_related_materials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读1:学习资料整理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_2_dcf_and_csmaca/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读2:DCF与CSMA/CA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_3_csmacd_vs_csmaca/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读3: CSMA/CD与CSMA/CA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_4_pcf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读4: PCF工作模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_5_hidden_node_vs_exposed_node/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读5: 隐藏终端和暴露终端
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_6_11b_tx_rx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读6: 802.11b的发送过程与接收过程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_7_11ag_tx_rx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读7: 802.11a/g的发送过程与接收过程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    802.11协议精读8: 再论802.11a/g的发送过程与接收过程
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读8: 再论802.11a/g的发送过程与接收过程
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    序言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#80211agofdm-symbolofdm-subcarrier" class="md-nav__link">
+    802.11a/g：OFDM Symbol和OFDM Subcarrier
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#80211agphy" class="md-nav__link">
+    802.11a/g：物理层（PHY）的发送过程
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#80211agphy_1" class="md-nav__link">
+    802.11a/g：物理层（PHY）的接收过程
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    序言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#80211agofdm-symbolofdm-subcarrier" class="md-nav__link">
+    802.11a/g：OFDM Symbol和OFDM Subcarrier
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#80211agphy" class="md-nav__link">
+    802.11a/g：物理层（PHY）的发送过程
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#80211agphy_1" class="md-nav__link">
+    802.11a/g：物理层（PHY）的接收过程
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="80211880211ag">802.11协议精读8：再论802.11a/g的发送过程与接收过程</h1>
+<p>转载自: <a href="https://zhuanlan.zhihu.com/p/21496609">802.11协议精读8：再论802.11a/g的发送过程与接收过程 - 知乎</a></p>
+<h2 id="_1">序言</h2>
+<p>我们之前描述了 802.11a/g 的发送和接收过程，都是基于协议表述上下层的交互机制的角度来描述的，而没有关注物理层获得数据帧之后，如何发送这样一个具体的流程，这一篇我们再对 802.11a/g 的物理层发送和接收过程进行一些扩展。这里主要是参考<strong>《Cambridge.Next Generation Wireless LANs.802.11n》</strong>这一本书上面的描述，我们对这一块进行整理。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>目前我们的整理中还在尽量避免一些复杂的公式和表述的方法，希望先以简单的概念和流程先进行整理，至于一些细节部分可能之后有时间在独立整理，所以如果存在细节表述不对的地方，还请见谅。</p>
+</div>
+<h2 id="80211agofdm-symbolofdm-subcarrier">802.11a/g：OFDM Symbol和OFDM Subcarrier</h2>
+<p>为了理解 802.11a/g 物理层的发送和接收过程，我们首先需要对其物理层的一些基本知识做一些简单的理解。</p>
+<p>在 802.11a/g 协议中，其物理层是采用 OFDM 技术（Orthogonal Frequency Division Multiplexing），OFDM技术这里我们不做过多的展开，不过为了理解后文，我们需要明白两个概念，即 <code>OFDM 符号 (OFDM Symbol)</code>以及 <code>OFDM 子载波 (OFDM Subcarrier)</code>，前者主要是在<strong>时域</strong>的角度而言，后者则对应<strong>频域</strong>。</p>
+<p><img alt="80211ag_phy_ppdu_format" src="../images/80211ag_phy_ppdu_format.png" /></p>
+<p>首先我们理解下 <code>OFDM symbol</code>，如上图蓝色部分所指（该图见07版协议595页，同时红色方框在后文处所用，这里并没有关联），我们可以发现，在 802.11a/g 中，其最终描述物理层帧的时候，并没有采用 bit 作为基本单元，而是采用 OFDM symbol 作为基本单元，这也是我们所需要接受的一个概念，在 802.11 中，若其信道的带宽固定，比如规定是 20MHz 的信道带宽，且由于其子载波数也是定值，那么其 OFDM symbol 的大小也就是固定的了。</p>
+<p>我们下面具体以 802.11a/g 的一个 OFDM symbol 举例进行解释：</p>
+<p><img alt="80211ag_ofdm_symbol_example" src="../images/80211ag_ofdm_symbol_example.png" /></p>
+<p>上图我们描述了两种 OFDM symbol，一种是不带CP（循环前缀），为图中左边部分，该 OFDM symbol 占时长<strong>3.2us</strong>，一种是带CP（循环前缀），为图中右边部分，该 OFDM symbol 占时长<strong>4us</strong>。图中的蓝色箭头代表发送的样本点，在 20MHz 信道带宽的情况下，其每 0.05us 就发送一个样本点，一个 OFDM symbol（不包含CP）一共包含了64个样本点，这64也代表着发送和接收过程中，都是以64个点为一个组合，进行一次处理，而不是一个个点单独处理，所以在 802.11a/g 下，其基本单元都是 OFDM symbol，而不是关注一个个采样点。同时为了减少通讯环境的影响，通常会在这 64 个样本点之前还添加一段 CP，该 CP 是将原来OFDM Symbol的最后一段，复制到该Symbol的头部之前，用来避免由于时延扩展所造成的码间串扰以及载波间干扰（在协议中，CP和GI（Guard Interval）是在同一个位置添加的，我们可以理解成，利用 CP 来填充 GI）。</p>
+<p>接着我们需要了解下 802.11a/g 在频域上所对应子载波的结构。在 802.11a/g 中，实际上一共有 64 个子载波，如下图我们具体看下 OFDM 子载波的结构：</p>
+<p><img alt="80211ag_ofdm_subcarrier_concept" src="../images/80211ag_ofdm_subcarrier_concept.png" /></p>
+<p>如上图所示，子载波一共分成4个类型</p>
+<ul>
+<li>
+<p>Null Subcarrier</p>
+<p>图中蓝色的箭头，用来做保护间隔的，没有承载任何数据，在左边（即频率较低的一侧）有6个Null子载波，在右边有5个Null子载波。</p>
+</li>
+<li>
+<p>Pilot Subcarrier</p>
+<p>图中绿色的箭头，用来估计信道参数并用在具体的数据解调中，承载的是特定的训练序列，一共有4个导频子载波。</p>
+</li>
+<li>
+<p>DC Subcarrier</p>
+<p>图中黄色的箭头，一般材料里面没有用这个词，这里仅仅是为了描述造了一个词，在子载波中心位置的DC subcarrier一般都是空置不用的，所以这里标识一下。</p>
+</li>
+<li>
+<p>Data Subcarrier</p>
+<p>图中红色的箭头，用来真实传递数据所用的子载波，在 802.11a/g 中，这种子载波一共有52个。</p>
+</li>
+</ul>
+<p><img alt="80211ag_ofdm_symbol_vs_ofdm_subcarrier.png" src="../images/80211ag_ofdm_symbol_vs_ofdm_subcarrier.png" /></p>
+<p>最后参考上图（参考《Supporting Real-time Wireless Traffic through a High-Throughput Side Channel》，貌似这张图表述的还不错，至于中间的ener），我们简单描述下以上 OFDM Symbol 和 OFDM Subcarrier 的关系，其两者主要是由于 IFFT/FFT 的机制进行关联的。在 802.11a/g 的系统中，发送机和接收机处理数据都是按照，64个一组处理一次这样的形式，而这个64个一组能够分辨实际上就是通过OFDM subcarrier这种频域上，各个子载波是正交的形式，所以可以独立并且同时进行处理。而发送机发送只能按照一个个样本点进行按序的发送，若按矩阵进行理解的话，一开始发送机是处理 <span class="arithmatex">\(64\times 1\)</span> 的纵矩阵，一次性处理64个点，然后通过IFFT计算，将这64个点（也就是对应64个子载波）转换为 <span class="arithmatex">\(1\times 64\)</span> 个样本点，这64个样本点就构成了时域上的一个OFDM Symbol，其中每一个样本点都包含了原来64个点的部分信息，只有在接收方接收完这64个点之后，才可以进行一次逆运算（FFT），重新转换为 <span class="arithmatex">\(64\times 1\)</span> 的矩阵进行处理，最后接收方才可以对数据进行正确的接收。有了这些预配知识以后，我们后面开始描述一些物理层的发送和接收过程。</p>
+<h2 id="80211agphy">802.11a/g：物理层（PHY）的发送过程</h2>
+<p><img alt="80211ag_phy_tx_procedure" src="../images/80211ag_phy_tx_procedure.png" /></p>
+<p>相比之前描述的 802.11a/g 的流程，我们接下来描述的内容是当物理层的数据帧中，STF，LTF以及SIGNAL字段都已经封装好之后，接下来物理层发送流程的一些细节。我们用上图来描述一个物理层具体的发送过程：</p>
+<ol>
+<li>
+<p>首先当正式的数据字段从MAC层下到物理帧之后（PLCP Header部分已经处理完了），会被增加三个部分：service，tail以及pad bits（这里可以关注第一部分描述OFDM symbol图中红色方框部分），这里需要注意的是，service字段虽然属于PLCP Header的内容，但是其是在DATA部分以高速率进行发送的，其余tail字段是为了卷积编码所使用的，pad bits是我们所述802.11a/g物理层都是基于OFDM symbol的，所以当symbol中数据字段不够的时候，需要填充空白字段，从而才能够生成OFDM symbol。</p>
+</li>
+<li>
+<p>在添加完三个部分之后，数据帧需要经过扰码器（Scrambler），扰码器的初始状态是通过service字段获得的，同时service字段实际上是通过MAC层传递下来的TXVECTOR参数获得的，在整个传输过程中，发送机和接收机需要采用相同的扰码序列。</p>
+</li>
+<li>
+<p>当扰码结束后，依序进行卷积编码（Conv. Encoder，用以增加冗余），用比特组成码元（Group bits into symbols），交织器（Interleaver，用以避免相邻的bit受到相同的频率选择性衰落的影响），然后对数据进行调制并映射到相应的子载波上（Modulator / Mapper），需要注意的是这里一般调制的数据都是复数，按笔者理解这里应该就是IQ相位进行的调制，所以在调制器模块之后，都是并发两个输出指向下一个模块。</p>
+</li>
+<li>
+<p>在数据部分完成之后，接着是插入4个导频码（Insert Four Pilots），用来在导频子载波上使用。</p>
+</li>
+<li>
+<p>当准备工作完成之后，进行IFFT变换（IFFT），生成一个OFDM Symbol中的一个个样本点，在802.11a/g中，一共有64个样本点。然后将该64个样本点对应的后1/4（即后面的0.8us），复制到symbol之前，从而构造了一个带CP的OFDM Symbol（Prepend Cyclic Prefix）。</p>
+</li>
+<li>
+<p>为了满足协议中spectral mask的要求，需要对每一个OFDM Symbol使用脉冲整形函数（Pulse Shaping Filter）进行平滑，以减少频谱旁瓣的干扰，实际上这里可以理解成是添加了一个升余弦滤波器做了一些处理。在《Cambridge.Next Generation Wireless LANs.802.11n》一书中，有给出推荐的整形函数的公式，这里就不展开了。</p>
+</li>
+<li>
+<p>最后通过DAC生成模拟波形，经过混频，功率放大器PA，最终通过天线发送出去，那么一个发送过程基本就结束了。</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>下图是参考《MIMO-OFDM Wireless Communications with MATLAB》一书中，OFDM Symbol经过脉冲整形之后的时域结果，这里只是给出一个直观的感觉，对于参数本文并不展开。</p>
+<p><img alt="80211ag_time_signal_after_pulse_shaping_filter" src="../images/80211ag_time_signal_after_pulse_shaping_filter.png" /></p>
+</div>
+<h2 id="80211agphy_1">802.11a/g：物理层（PHY）的接收过程</h2>
+<p><img alt="80211ag_phy_rx_procedure" src="../images/80211ag_phy_rx_procedure.png" /></p>
+<p>对照 802.11a/g 的发送流程，我们接下来描述对应的接收流程。在上图所描述的接收流程中，STF，LTF 以及 SIGNAL 字段的使用是被包含在内的。</p>
+<ol>
+<li>
+<p>在接收信号一端，信号经过低噪声放大器LNA，混频之后，接收机首先通过 STF 和 LT F字段完成初期的 AGC，频率校正（Frequency Correction），以及码元定时校正（Symbol Timing Adjust）的相关功能。同时在数据帧头部的 SIGNAL 字段中，也提供了上层解调所需要具体的 MCS 值，数据帧长度等相应信息，上图并未体现，不过这个部分信息也是需要在接收过程初期就需要获得的。</p>
+</li>
+<li>
+<p>在这之后，对接收序列进行串并转换（Serial to Parallel），实际上可以理解成累积采样点的过程，然后移除每一个OFDM Symbol的保护间隔CP（Remove Guard Interval，这里CP和GI的位置是一致的，协议表述一般为GI），然后进行对这些采样点序列进行FFT变化，转换为频域子载波进行处理。</p>
+</li>
+<li>
+<p>在FFT之后，利用 LTF 字段以及导频 Pilot 的相应信息对 OFDM Symbol 再一次进行一些细致的处理，包含信道均衡（Channel Equalizer），导频追踪和相位校正（Pilot Tracking &amp; Phase Correction）以及处理一些解码所需要的可靠性的信息（Reliability information for decoder）。</p>
+</li>
+<li>
+<p>接着要按序进行解映射（Demapper）和解交织（De-Interleaver）的工作，据《Cambridge.Next Generation Wireless LANs.802.11n》一书所言，802.11a 系统是采用BICM（Bit Interleaved Coded Modulation）的方式完成解映射，解交织的相应工作，这一块笔者也没有深入看过，故先了解与一下。</p>
+</li>
+<li>
+<p>当以上的内容处理结束后，数据就需要被进行并串转换，从而从之前的OFDM Symbol，一个个按照一组采样点的处理方式，变成按照数据流的处理方式。然后经过解码获得解调之后的数据流。这里实际上还是存在非常多的细节部分，但是本文并没有对此进行展开，还请见谅，有部分内容扩展到也可以参阅原书。</p>
+</li>
+<li>
+<p>当解码之后，最后一个步骤是解扰码。接收机通过数据帧中携带的service字段作为解扰器的初始状态，从而一次解扰整个数据流。</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>本文主要简单叙述了 802.11a/g 物理层接收和发送过程的一些流程，因为本文主要关心是物理层发送和接收的总体流程，所以避免了一些具体过程的内容，比如没有过多展开说明 OFDM symbol 时域和 OFDM Subcarrier 之间的关系，CP，GI以及64样本点以及FFT/IFFT的关系之类也有点不明确，后续解调的一些细节也一带而过，同时为了简化，部分概念也不是表述很好，可能也有一些错误，导致部分表述存在问题，故还请见谅，有错误还请指出，谢谢。</p>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+      
+        <script src="../../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../ieee80211_protocol_study_5_hidden_node_vs_exposed_node/">
+        <link rel="prev" href="../ieee80211_protocol_study_6_11b_tx_rx/">
       
       
-        <link rel="next" href="../ieee80211_protocol_study_7_11ag_tx_rx/">
+        <link rel="next" href="../ieee80211_protocol_study_8_11ag_tx_rx_2/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>802.11协议精读6: 802.11b的发送过程与接收过程 - IEEE 802.11 Notes</title>
+        <title>802.11协议精读7: 802.11a/g的发送过程与接收过程 - IEEE 802.11 Notes</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#80211680211b" class="md-skip">
+        <a href="#80211780211ag" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              802.11协议精读6: 802.11b的发送过程与接收过程
+              802.11协议精读7: 802.11a/g的发送过程与接收过程
             
           </span>
         </div>
@@ -345,6 +345,26 @@
                 
   
   
+  
+    <li class="md-nav__item">
+      <a href="../ieee80211_protocol_study_6_11b_tx_rx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    802.11协议精读6: 802.11b的发送过程与接收过程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -360,7 +380,7 @@
           
   
   <span class="md-ellipsis">
-    802.11协议精读6: 802.11b的发送过程与接收过程
+    802.11协议精读7: 802.11a/g的发送过程与接收过程
   </span>
   
 
@@ -371,7 +391,7 @@
         
   
   <span class="md-ellipsis">
-    802.11协议精读6: 802.11b的发送过程与接收过程
+    802.11协议精读7: 802.11a/g的发送过程与接收过程
   </span>
   
 
@@ -400,22 +420,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#80211b" class="md-nav__link">
-    802.11b：物理层头部
+  <a href="#80211ag" class="md-nav__link">
+    802.11a/g: 物理层头部
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#80211b_1" class="md-nav__link">
-    802.11b: 发送过程
+  <a href="#80211ag_1" class="md-nav__link">
+    802.11a/g: 发送过程
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#80211b_2" class="md-nav__link">
-    802.11b: 接收过程
+  <a href="#80211ag_2" class="md-nav__link">
+    802.11a/g: 接收过程
   </a>
   
 </li>
@@ -424,26 +444,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ieee80211_protocol_study_7_11ag_tx_rx/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    802.11协议精读7: 802.11a/g的发送过程与接收过程
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -510,22 +510,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#80211b" class="md-nav__link">
-    802.11b：物理层头部
+  <a href="#80211ag" class="md-nav__link">
+    802.11a/g: 物理层头部
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#80211b_1" class="md-nav__link">
-    802.11b: 发送过程
+  <a href="#80211ag_1" class="md-nav__link">
+    802.11a/g: 发送过程
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#80211b_2" class="md-nav__link">
-    802.11b: 接收过程
+  <a href="#80211ag_2" class="md-nav__link">
+    802.11a/g: 接收过程
   </a>
   
 </li>
@@ -545,61 +545,75 @@
                   
 
 
-<h1 id="80211680211b">802.11协议精读6：802.11b的发送过程与接收过程</h1>
-<p>转载自: <a href="https://zhuanlan.zhihu.com/p/21483155">802.11协议精读6：802.11b的发送过程与接收过程 - 知乎</a></p>
+<h1 id="80211780211ag">802.11协议精读7：802.11a/g的发送过程与接收过程</h1>
+<p>转载自: <a href="https://zhuanlan.zhihu.com/p/21485216">802.11协议精读7：802.11a/g的发送过程与接收过程 - 知乎</a></p>
 <h2 id="_1">序言</h2>
-<p>802.11 目前都还是属于一个 半双工 的协议版本，所以在其设计接入过程时，不仅仅要考虑避免由于共享信道造成的冲突问题，同时也要考虑 发送和接收的切换 问题。在基本的两种工作模式：DCF 与 PCF 中，PCF 是采用 AP 中心控制的方法，只有当 AP 去polling节点的时候，节点才会变成发送状态，否则节点都是出于接收状态，而DCF模式中，由于节点能够主动竞争信道，那么发送和接收的切换则变得较为复杂。参考 <a href="http://staff.ustc.edu.cn/~xinming/Wireless%20Networks/ME-Wireless%20Communications%20and%20Networks/802.11-tutorial.pdf">IEEE 802.11 Tutorial（Mustafa Ergen）</a>，我们对这一块进行整理。在该资料中，整理了 802.11b 和 802.11a 两种工作模式，前者是基于 DSSS 的，后者是基于 OFDM 的，对于 802.11n/ac 以及其他的新协议，这一块过程上应该是更复杂一些，但是这份整理中还未涉及。我们这里首先整理 802.11b 工作模式下的相关内容。</p>
-<h2 id="80211b">802.11b：物理层头部</h2>
-<p>为了理解802.11b中的发送和接收过程，我们首先需要对其物理层的头部进行一定的理解。在802.11b的物理层头部前面有两个部分，一个 PLCP preamble，一个 PLCP header。如下图（图参考自泰克的文档）</p>
-<p><img alt="80211b_phy_header_format" src="../images/80211b_phy_header_format.png" /></p>
-<p>其各个部分对应的功能如下：</p>
-<p><img alt="80211b_phy_header_fields_explained" src="../images/80211b_phy_header_fields_explained.png" /></p>
-<p>其中前置码 （preamble）是采用最低速率进行发送的，也就是 <code>DSSS 1M</code>，对应 barker 码的最低速率。Header 部分也是用最低速率，或者次低速率进行发送的。sync 是用来做帧同步的，SFD 是用来找数据帧起始的。然后 header 里面是具体的一些设置。其具体的结构可以进一步展开：</p>
-<p><img alt="80211b_phy_preamble_phy_header_packet_fomat" src="../images/80211b_phy_preamble_phy_header_packet_fomat.png" /></p>
-<p>在 802.11b 的物理层头部最先是 <code>preamble</code> 部分，在 preamble 部分包含两个部分，<code>sync</code> 和 <code>SFD</code>，其中 sync 是用来做帧同步的，也就是发现信道中有没有数据帧，SFD 是作为帧起始标识的。</p>
-<p>在 sync 中有分为长和短两个部分，一般也直接成为 <code>长preamble</code> 和 <code>短preamble</code>。其中 <strong>长 preamble 是用作在覆盖范围较大（速率较低）</strong>的模式下，<strong>短 preamble 是用来覆盖范围较小（速率较高）</strong>的模式下。sync 如果是长训练序列全部填充为逻辑1，并且由于底层是 DSSS 1M 的，换言之这些逻辑 1 都需要经过 11 位 barker 码的扰码的。如果 sync 是短训练字段的话，那么填充为逻辑 0，也经过相同的扰码处理，这里一个采用逻辑 1 和逻辑 0 也是为了避免冲突。SFD 部分是 <code>0000 0101 1100 1111</code>，一旦识别到这个序列，就代表发现了一个数据帧。</p>
-<p>在 802.11b 的 PLCP header 部分，主要是做一些传输参数设置的。第一位是<code>signal</code>位，该位主要是告知 payload 的传输速率的，其中在 802.11b 一共只有4个速率，而且我们关注到，这里一共有 8 位，也就一共可以表明 2^8 个速率，但是实际中很多位是没有使用的。第二个专注长度位，即 length，这里的单位是 <strong>us</strong>，是<strong>payload传输的时间</strong>，这里的长度是采用 16 位的无符号整形。后面那个CRC位是用作校验位的，用来判断物理头部有没有错误。最后剩下来的就是 Service 位，其全称是<code>HR配置位</code>。这里的HR指的是High Rate，原因是由于最开始的 802.11 协议即是基于 DSSS/FHSS 技术的，而 802.11b 实际上也是基于同样的技术，但是由于其扩频码以及调制技术之类得到的升级，同时为了与传统的802.11协议做区别，所以命名即为<code>802.11b HR/DSSS</code>模式。其余还有一些内容可以参考（有关802.11b物理头：整体结构，有关802.11b物理头：preamble部分，有关802.11b物理头：Header部分）。接下来我们描述具体的 802.11b 中的发送和接收过程。</p>
-<h2 id="80211b_1">802.11b: 发送过程</h2>
-<p>上图描述了 802.11b 的发送过程，左边一部分是描述帧的各个部分与状态机的对应关系，中间主要是发送模式下，各个状态的转移过程，右边描述是PHY与MAC层的交互过程。接下来，我们按序描述一次发送过程：</p>
-<p><img alt="80211b_phy_tx_procedure_overview" src="../images/80211b_phy_tx_procedure_overview.png" /></p>
-<ol>
-<li>
-<p>初始状态是 <strong>Rx</strong>（接收状态）。</p>
-<p>若 MAC 通过 PHY_TXSTART.req 方法对 PHY 进行通知，则 STA 从 RX 状态转移至 Tx Init 状态，代表有数据需要被发送。在DSSS模式下，参数 TXVECTOR，一般包含了（LENGTH，DATATRATE，SERVICE，TXPWR_LEVEL）这4个具体的变量值，主要是设定数据的长度，速率，扰码的初始化序列，以及发送功率这些，这里先不展开了。若没有 MAC 层下发的通知，则节点还保持在 Rx 状态，代表没有上层数据的情况下，节点进行数据的发送。同时这里需要注意的是，我们在 DCF 竞争过程中，提到节点在不停的监听信道，只有信道空闲的时候，才会进行发送数据，所以 Rx 模式的状态转移到自己，也存在这样的一种情况，即不停的尝试接收。</p>
-</li>
-<li>
-<p>当状态切换为了 <strong>Tx Init</strong> 状态后，</p>
-<p>PHY 层会向 MAC 层反馈 PHY_TXSTART.conf（这个 conf 指的不是配置，而是确认(confirm)，所以在协议中目前是采用 PHY_TXSTART.confirm 这种表述，避免歧义）。这里可以注意到，Tx Init 状态下面可以转移到两个状态，一个是 <code>Encode Pream.</code>状态，一个是 <code>TxRx Switch</code> 状态。我们关注后者，即在该图表述中，在发送过程中任何一个状态都有可能因为接收到 MAC 层发送过来的 PHY_TXEND.req 信息，直接转换到 TxRx Switch 状态，无论发送过程是否完全结束，所以在后续的几个状态下，都可以直接切换到 TxRx Switch 状态，该 TxRx Switch 可能是一个逻辑开关，也可能是一个物理的射频天线开关，这里节点目前是发送状态，即天线是可以发送的，一旦进行天线切换，那么就转换为接收状态了。</p>
-</li>
-<li>
-<p>接下来，STA会转换到 <strong>Encode Pream.</strong>以及 <strong>Encode PLCP Hdr.</strong></p>
-<p>其中 Encode Pream.（对应左图红色SYNC和绿色SFD这两个部分）以及Encode PLCP Hdr.（对应左图紫色PLCP Hdr.这个部分）。这两个步骤实际上都是在封装 PHY 层的头部，即 PLCP Preamble 以及 PLCP Header。这一块内容在一开始的802.11b物理层头部部分，我们已经加以了叙述。</p>
-</li>
-<li>
-<p>当 PHY 层的 header 部分封装好了之后，MAC 层会向 PHY 层发送 <strong>PHY_DATA.req</strong>，用来向 PHY 层传递数据，并通过物理层进行发送（在上图中，这一块是画在 Encode Pream. 的后面，但是根据笔者理解协议中的顺序，感觉是在数据包开始的部分才是）。最后上层通过 PHY_TXEND 告知 PHY 层数据结束，从而正确转移至 TxRx Switch 状态，最终完成传输后，转换为 Rx 接收状态。</p>
-</li>
-</ol>
-<p><img alt="80211b_tx_mac_phy_exchange_flow" src="../images/80211b_tx_mac_phy_exchange_flow.png" /></p>
+<p>我们之前描述了 802.11b 的发送和接收过程，802.11b 是基于 DSSS 模式下的，这一篇我们关注下基于 OFDM 的 802.11a/g 的发送和接收过程。同样主要是参考IEEE 802.11 Tutorial（Mustafa Ergen），我们对这一块进行整理。对于 802.11n/ac 以及其他的新协议，这一块过程上应该是更复杂一些，但是这份整理中还未涉及，所以整理中并未包含。</p>
+<h2 id="80211ag">802.11a/g: 物理层头部</h2>
+<p>为了理解 802.11a/g 中的发送和接收过程，我们首先需要对其物理层的头部进行一定的理解。相比 802.11b 的物理层头部，802.11a/g 较为复杂一些。在 802.11a/g 的物理层头部前面有三个部分，一个<code>STF</code>，一个<code>LTF</code>，还有一个<code>SIGNAL</code>，即<code>短训练字段</code>和<code>长训练字段</code>以及一些具体的设置，如下图（图参考自泰克的文档）</p>
+<p><img alt="80211ag_packet_format" src="../images/80211ag_packet_format.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>这里我们基本就按照 IEEE 802.11 Tutorial（Mustafa Ergen）这一份材料进行描述，在原协议中，一般是采用上图这种上下层交互的模式（上图在07版协议542页），以及流程图来描述一些具体的过程，虽然较为严谨，但是不是很直观，所以还是这一份材料直观一些。所以需要对细节还需要更深入研究的话，那么还是读原协议好一些，这里很多内容都进行了简化和省略了。</p>
+<p>这里需要指出的是在 802.11a/g 中，整个物理层头部都叫做 preamble ，与 802.11b 中的 PLCP Preamble 的概念不同，这里就对于 PLCP 和 PMD 子层有非常明确的分界，所以还需要注意一下。</p>
 </div>
-<h2 id="80211b_2">802.11b: 接收过程</h2>
-<p><img alt="80211b_phy_rx_procedure_overview.png" src="../images/80211b_phy_rx_procedure_overview.png" /></p>
-<p>上图描述了 802.11b 的接收过程，图中三部分的含义和之前一样。接收状态较为复杂，需要综合我们在 DCF 那一块描述的载波监听的环节进行综合理解。以下我们按序进行叙述：</p>
+<p>其各个部分对应的功能如下：</p>
+<p><img alt="80211ag_packet_format_phy_fields_contents.png" src="../images/80211ag_packet_format_phy_fields_contents.png" /></p>
+<p>在协议原版中，对这一块有更细致的描述，如下图（07版协议第600页）</p>
+<p><img alt="80211ag_packet_format_from_protocol.png" src="../images/80211ag_packet_format_from_protocol.png" /></p>
+<p>在 802.11a/g 的物理层头部中，第一个部分为 STF（Short Training Field），STF 主要是由 10 个短的 symbol组成（t1~t10），其每一个 symbol 是 <code>0.8us</code>，其包含了很多个功能，其中 t1-t7 主要是包含 Signal Detect，AGC，Diversity Selection，t8-t10 主要是包含 Coarse Freq，Offset Estimation，Timing Synchronize，其中部分内容我们不进行展开了。</p>
+<p>一般情况下，我们认为 STF 主要的两个功能是：</p>
+<ul>
+<li>
+<p>帧同步【即判断有没有一个数据帧到达，从而寻找SFD（Start-of-Frame Delimiter）】</p>
+</li>
+<li>
+<p>粗频率同步，这里主要是针对频率偏移所做的一个同步的工作，同时也正好是对应后面的细频率同步的阶段（即 LTF 阶段）</p>
+</li>
+</ul>
+<p>我们在 DCF 的部分下，提到 CCA 中存在一种载波侦听 CS 的方式，其主要就是基于 t1-t10 这个部分的自相关或者互相关来完成的，如下图（参考Cambridge.Next Generation Wireless LANs.802.11n and 802.11ac）：</p>
+<p><img alt="80211ag_stf_auto_correlate" src="../images/80211ag_stf_auto_correlate.png" /></p>
+<p>横轴是采样点数，纵轴是幅度，这里并没做归一化，这里可以数出来一共有 10 个尖峰，和这里 t1-t10 的数量一致，一般识别到一个尖峰后，STA 就认为信道里面是有数据帧正在被传输的，从而完成 CS 的检测。一般情况下，为了避免时延扩展的影响，这里采用自相关的效果会比互相关好一些。同时有关频率估计这一块，由于和本文主旨关联不大，所以不进行展开了。</p>
+<p>第二个部分是 LTF（Long Training Field），其主要功能是<strong>细频率同步</strong>和<strong>信道估计</strong>。
+从结构上而言，LTF 一种是三个部分: 1) GI，即保护间隔，用来防止 ISI，即符号间干扰。2) 两个独立的长训练 symbol，T1 以及 T2。</p>
+<p>SIGNAL部分在Preamble的最后一个部分，其结构如下</p>
+<p><img alt="80211ag_PHY_signal_part" src="../images/80211ag_PHY_signal_part.png" /></p>
+<p>首先 <code>Rate</code> 是标识数据包的传输速率的，即采用什么调制方式，编码速率，一般协议中直接所述标识了 MCS 值（MCS对应不同的速率），这里一种 4 个 bit，实际上可以标识为 <span class="arithmatex">\(2^4\)</span>，16 个速率，实际上使用为 8 个。然后 <code>Length</code> 位是标识了数据包（具体payload）的长度，这里没有什么特殊的地方，与 802.11b 的前面不同，802.11b 那里是传输数据包的时间，而 802.11a/g 的情况下是长度。tail位是有个时候为了做FEC的，具体与卷积编码有关，在 802.11a/g 中，数据包头部和payload是分开来编码的，所以在头部有一个tail部分，payload体中间也有一个tail部分。通常这个部分设置成逻辑“0”。最后是reserved和parity部分，通常情况下，parity是用来做偶数奇偶性校验的。由于这里parity只有1位，所以在噪声比较大的情况下，很容易发生误识别的问题。所以在这一些设计中，把reserved位当做parity的一个扩展。同时，在802.11a/n混合模式中（这里由于802.11n也可以定义在5G频段），这里也有使用reserved位来维护一个协议的后续兼容性，即采用reserved来表示这个是一个802.11n MF Frame（PS：MF即是mixed format）。其余的一些补充可以参考（有关802.11a/g物理头：Premble结构，有关802.11a/g物理头：STF部分，有关802.11a/g物理头：LTF部分，有关802.11a/g物理头：SIGNAL部分），基于这些预备知识，我们下面描述802.11a/g的发送和接收过程。</p>
+<h2 id="80211ag_1">802.11a/g: 发送过程</h2>
+<p><img alt="80211ag_tx_procedure" src="../images/80211ag_tx_procedure.png" /></p>
+<p>总体结构上而言，802.11a/g 和 802.11b 的发送过程基本变化不大，有些相同的部分我们会简化一些描述。</p>
+<ol>
+<li>初始是Rx状态，</li>
+</ol>
+<p>若收到上层的 PHY_TXSTART.req(TXVECTOR) 信息，则 PHY 层转换到 Tx Init 状态，在 802.11a/g 的 TXVECTOR 和 802.11b 中基本一致。</p>
+<ol>
+<li>当成功转移到 Tx Init 状态后，下一个状态是 Gen. Pream. 状态，</li>
+</ol>
+<p>这一步是用来产生 preamble 的，不过在该图中，这里主要是完成封装 preamble 中的 STF 和 LTF 两个字段的工作，即对应左图中的红色 S1-S10 部分，以及绿色 pilot1-pilot2 部分，由于这份资料较早，故直接采用了pilot这个说法，当前在 802.11a/g 中，pilot主要指的是用以信道估计的专用导频子载波，LTF 也有这样的功能，主要一个是在传输前所使用，一个是在传输中所使用。这里同时 PHY 会向 MAC 层反馈 PHY_TXSTART.confirm 信息。</p>
 <ol>
 <li>
-<p>初始状态是 <strong>Rx</strong>（接收状态），</p>
-<p>这里并没有直接画出来，是由于节点如果不是在 Tx 状态时，默认就是保持在 Rx 状态。在 Rx 状态里面，节点所做的第一个动作主要是为了载波监听 CCA，上图中，为了简化并没有包含虚拟载波监听的部分，这里我们也不进行扩展。在 DCF 那一块描述中，我们所述 CCA 包含了两个部分，ED（能量检测）和 CS（载波侦听），在上图中，节点首先进行能量检测，判断能量是否大于一个预设的 PMD_ED.indicate（即图中的PMD_ED.ind），初始的信道状态是通过右边的 PHY_CCA.ind 预设为 idle，即空闲的。</p>
+<p>当转移到 Encode SIGNAL 状态后，这里是对 preamble 中的 singal 字段进行封装，其字段内容在之前我们已经提到过了，所以这里就不展开了，实际上和 802.11b 中的 PLCP Heade r部分是一致的。</p>
 </li>
 <li>
-<p>在通过能量检测判断信道是否空闲后，即 ED 转移到 CS 的状态后，PHY 层需要采用载波侦听 CS 的方式，检测是否是一个 802.11 帧，因为如果外界干扰较大，那么能量检测也会发现信道是忙的。载波侦听在 802.11b 中主要是通过<code>互相关</code>的方式，判断对 preamble 相关的结果是不是大于一个给定的阈值，如果相关找到一个峰值的话（即图上的peak(s) found），那么通过 PMD_CS.ind 这个参数触发寻找 SFD 的状态，在 802.11b 中，SFD 的意思和有线网络中 SFD 的意思基本一致，都是一个特定序列用以标识数据包的起始部分。如果检测不到 SFD 的话，PHY 会转移到 RSSI Monitor 状态，直到其检测的 RSSI 小于给定阈值的时候才会回到初始的 ED 状态（该RSSI是通过ED获取的，即这里就是检测不到帧，但是信道上有能量），在这一个过程中，PHY 层向 MAC 层传输的 PHY_CCA.ind 都是出于 busy 状态，只有既没有检测的 CS 的 peak，也没有存在RSSI大于阈值的情况下，PHY才会转移为 ED 状态，并反馈上层信道是 idle 状态，只有在 idle 状态下，STA 才可以进行发送。上述的两个部分对应左图的红色和绿色，SYNC和SFD的部分。</p>
+<p>当接收到从 MAC 层发送过来的 PHY_DATA.req 之后，PHY 转移到 Encode Data 状态，对数据进行发送，直到上层数据发送完毕，MAC 层会传递来 PHY_TXEND.req 信息，从而 PHY 层会根据该信息转移至TxRx Switch状态对天线的工作机制进行转换。同时在传输过程中，任何一个状态也都有可能由于收到 PHY_TXEND.req 信息，而直接转移至 TxRx Switch 状态，这一点与 802.11b 中应该一致。若最终发送完成后，转移为 Rx 状态，并等待下一次传输。</p>
+</li>
+</ol>
+<h2 id="80211ag_2">802.11a/g: 接收过程</h2>
+<p><img alt="80211ag_rx_procedure" src="../images/80211ag_rx_procedure.png" /></p>
+<p>在 802.11a/g 的接收过程中，基本结构和 802.11b 的类似，细节存在一些区别。</p>
+<ol>
+<li>
+<p>在Rx状态下，首先节点还是通过 ED 和 CS 的方式判断信道是否空闲，以及有没有对应的数据帧在信道中进行传输。</p>
+<p>如果CS检测到的话，那么可能就存在一个数据帧，那么需要再次通过 FD 来确定是不是一个数据帧，我们前面提到过，在 802.11a/g 中都是以<code>相关的方式</code>检测的，而不像 802.11b 中是采用 <code>SFD 的方法</code> 检测帧起始部分的，所以在 FD 检测的时候，会不断的循环检测，直到找到最后一个跳变的位置（即last peak located），那么才检测到一个帧起始。若 CS 检测失败的话，与 802.11b 相同，其会根据能量检测判断信道是否空闲，只有信道空闲时，才会转移为 ED 模式。在Rx状态下，当信道 busy 时，PHY 会向 MAC 通过 PHY_CCA.ind 反馈busy，当转移回 ED 状态时，PHY 会向 MAC 反馈 idle。</p>
 </li>
 <li>
-<p>当 SFD 状态完成之后，即 STA 已经识别到有一个数据帧正在发送了。这时候，节点首先接收数据帧的 PLCP Header 部分，并且首先对其进行 CRC 校验。在 PLCP Header 部分包含了后续接收数据所需要的一些信息，比如包长度以及传输速率这些参数，所以如果 header 部分接收错误的话，那么后续进行是没有必要进行接收的（换言之是不知道怎么解析），所以首先要对 PLCP Header 部分进行 CRC 确认，如果失败的话，则判断信道是否空闲回归之前的步骤。如果成功的话，那么就对这些参数进行匹配，并通过 PHY_RXSTART.ind 对上层进行反馈，告知 MAC 层有一个数据包正在接收中。这里还存在一个问题是，PHY 层需要判断发送过来数据包的速率是否是本地可以支持的，因为速率如果太高可能无法解调（这里目前的协议中这个问题基本不存在，STA都是全速率支持的，早期版本可能会存在这个问题），如果无法达到所需求的速率，节点也是不进行接收的。这一部分对应左图中，紫色，PLCP Header的部分。</p>
+<p>当FD识别到数据帧起始之后，转移入PMD Est.状态，</p>
+<p>这个状态貌似不是一个参数，且Est.应该是establish的意思，这里原始协议中没有直接采用过这个词组，而是在句子里面大致这样说过。在PMD Est.状态之后，通过传递 PMD_DATA.ind 参数，PHY 开始处理 SINGAL 字段，其首先对其进行奇偶校验，这里没有采用 802.11b 中的CRC的方式，也许是为了简化一些。当解析成功后，提取解调数据所需要的MCS值，数据包大小等相关信息用以对上层数据包进行解析。若奇偶校验失败，则停止这一轮的传输，等待信道空闲后重新开始。</p>
 </li>
 <li>
-<p>当上述都满足条件后，最终节点对数据进行接收，即状态 <strong>Data Decode</strong>，当接收完数据之后，向上层反馈 PHY_RXEND.ind，这一部分对应左图中蓝色Data部分。</p>
+<p>当成功解析到了SIGNAL字段之后，PHY 层会对其数据字段的传输速率是否匹配进行判断，如果该速率是支持的话，那么转移至 DATA Decode 状态。若数据速率不支持的话，那么意味着无法解调，这里由于STA已经通过SIGNAL字段知道的数据包的大小以及传输速率，所以能够计算出数据包传输所需要花费的时间，从而就没有转移至RSSI Monitor 状态，而是转移至 Wait Frame End 状态，等待对方释放信道，类似 NAV 的工作模式，等待计时为0时，转移回 ED 状态。</p>
+</li>
+<li>
+<p>如果SINGAL字段解析成功，且速率匹配的话，那么就正常接收数据包，并反馈给 MAC 层 PHY_RXSTART.ind 信息，最终当数据接收完毕之后，反馈给上层 PHY_RXEND.ind 信息，然后回到初始状态。</p>
 </li>
 </ol>
 
