@@ -1,4 +1,4 @@
-## WiFi 接收 AGC 浅析
+# WiFi 接收 AGC 浅析
 
 **转载自**: [WIFI接收AGC浅析](https://mp.weixin.qq.com/s/l2M3d2CdTxaMKk1MN7d4tQ)
 
