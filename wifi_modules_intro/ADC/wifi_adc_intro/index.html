@@ -9,18 +9,22 @@
       
       
       
+        <link rel="prev" href="../../../ieee80211_in_depth/ieee80211_protocol_study_8_11ag_tx_rx_2/">
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+        <link rel="next" href="../../AGC/wifi_rx_agc_intro/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
     
     
       
-        <title>IEEE 802.11 Notes</title>
+        <title>Wifi ADC Introduction - IEEE 802.11 Notes</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
       
       
 
@@ -41,7 +45,7 @@
     
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.css">
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -59,6 +63,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#wifiadc" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -71,7 +80,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="IEEE 802.11 Notes" class="md-header__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+    <a href="../../.." title="IEEE 802.11 Notes" class="md-header__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -91,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Wifi ADC Introduction
             
           </span>
         </div>
@@ -169,7 +178,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="IEEE 802.11 Notes" class="md-nav__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
+    <a href="../../.." title="IEEE 802.11 Notes" class="md-nav__button md-logo" aria-label="IEEE 802.11 Notes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -187,7 +196,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -247,7 +256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ieee80211_in_depth/ieee80211_protocol_study_1_related_materials/" class="md-nav__link">
+      <a href="../../../ieee80211_in_depth/ieee80211_protocol_study_1_related_materials/" class="md-nav__link">
         
   
   
@@ -270,7 +279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ieee80211_in_depth/ieee80211_protocol_study_2_dcf_and_csmaca/" class="md-nav__link">
+      <a href="../../../ieee80211_in_depth/ieee80211_protocol_study_2_dcf_and_csmaca/" class="md-nav__link">
         
   
   
@@ -293,7 +302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ieee80211_in_depth/ieee80211_protocol_study_3_csmacd_vs_csmaca/" class="md-nav__link">
+      <a href="../../../ieee80211_in_depth/ieee80211_protocol_study_3_csmacd_vs_csmaca/" class="md-nav__link">
         
   
   
@@ -316,7 +325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ieee80211_in_depth/ieee80211_protocol_study_4_pcf/" class="md-nav__link">
+      <a href="../../../ieee80211_in_depth/ieee80211_protocol_study_4_pcf/" class="md-nav__link">
         
   
   
@@ -339,7 +348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ieee80211_in_depth/ieee80211_protocol_study_5_hidden_node_vs_exposed_node/" class="md-nav__link">
+      <a href="../../../ieee80211_in_depth/ieee80211_protocol_study_5_hidden_node_vs_exposed_node/" class="md-nav__link">
         
   
   
@@ -362,7 +371,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ieee80211_in_depth/ieee80211_protocol_study_6_11b_tx_rx/" class="md-nav__link">
+      <a href="../../../ieee80211_in_depth/ieee80211_protocol_study_6_11b_tx_rx/" class="md-nav__link">
         
   
   
@@ -385,7 +394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ieee80211_in_depth/ieee80211_protocol_study_7_11ag_tx_rx/" class="md-nav__link">
+      <a href="../../../ieee80211_in_depth/ieee80211_protocol_study_7_11ag_tx_rx/" class="md-nav__link">
         
   
   
@@ -408,7 +417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ieee80211_in_depth/ieee80211_protocol_study_8_11ag_tx_rx_2/" class="md-nav__link">
+      <a href="../../../ieee80211_in_depth/ieee80211_protocol_study_8_11ag_tx_rx_2/" class="md-nav__link">
         
   
   
@@ -435,18 +444,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -462,7 +473,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Wifi Modules
@@ -473,18 +484,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
         
           
           <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
@@ -500,7 +513,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_1">
             <span class="md-nav__icon md-icon"></span>
             ADC
@@ -511,10 +524,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/wifi_modules_intro/ADC/wifi_adc_intro/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -525,6 +547,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -583,7 +606,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/wifi_modules_intro/AGC/wifi_rx_agc_intro/" class="md-nav__link">
+      <a href="../../AGC/wifi_rx_agc_intro/" class="md-nav__link">
         
   
   
@@ -631,6 +654,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -642,8 +667,54 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+
+<h1 id="wifiadc">WIFI接收链路ADC解析</h1>
+<p><strong>转载自</strong>: <a href="https://mp.weixin.qq.com/s/xJkzcR076PPkDLoZ0ElC1A">WIFI接收链路ADC解析</a></p>
+<p>对于 direct conversion radio 的 WiFi 接收链路，ADC 是与数字直接相连的模块，它将经过下变频的模拟信号转换成数字信号，然后交给 digital baseband 来进行处理，理解 ADC 的相关概念，比如 ADC 动态范围，SNR，SFDR 等对于数字的处理，特别是AGC系统设计会有帮助.</p>
+<p><img alt="wifi_rf_architecture.png" src="../images/wifi_rf_architecture.png" /></p>
+<p>WiFi 接收链路是将天线端的信号经过一系列的转换变成数字信号从 ADC 端输出，假设最大接收信号为 <code>-5dBm</code>（当然有些系统可以达到  0dBm甚至正数），最小接收信号，也就是接收灵敏度为 <code>-98dBm</code>，中间经过 LNA，RMX，FILTER, VGA，信号从射频信号转换成基带信号，最后映射到 ADC 的动态范围之内.</p>
+<p><img alt="rx_single_map_to_adc_full_scale.png" src="../images/rx_single_map_to_adc_full_scale.png" /></p>
+<p>理想的 ADC，其动态范围可以通过如下公式来计算，如果是 <code>10bits</code> 的 ADC，其动态范围为 <code>61.96dB</code>。</p>
+<p><img alt="snr_of_adc" src="../images/snr_of_adc.png" /></p>
+<p>为了简单起见，假设  ADC full scale的时候允许输入的信号大小为 0dBm（该值可以通过ADC full scale对应的电压，电路匹配等计算得出），实际电路中，ADC不可能达到理想的动态范围，假设 10bits ADC 实际的有效 bit 数为 9，那么 ADC 能分辨的最小信号为 -54dBm 左右，同样还是以天线输入 <span class="arithmatex">\(-5dBm ~ -98dBm\)</span> 的信号范围为例：</p>
+<ul>
+<li>
+<p>整个接收链路的 noise（从LNA到ADC输入端）肯定会大于 ADC 本身的噪声，假设为 10dB</p>
+</li>
+<li>
+<p>假设解调需要的信噪比为 3dB</p>
+</li>
+<li>
+<p>假设接收链路的 gain variation 为 3dB</p>
+</li>
+<li>
+<p>假设实际 OFDM 64QAM 的 PAR 为 12dB</p>
+</li>
+</ul>
+<p>那么我们可以大概算出来接收时需要将 ADC 的信号范围调节到 -15dBm~-41dBm 的范围内，由此我们可以算出整个链路的增益范围大概是+57dB ~ -10dB，也就是链路的增益范围为 70dB 左右.</p>
+<p><img alt="adc_avail_signal_range" src="../images/adc_avail_signal_range.png" /></p>
+<p>以上我们没有考虑整个接收链路的 DC offset，过采样 对 ADC SNR 的提升以及block的影响.</p>
+<p>在实际的接收链路中，block的影响不可忽略，block又可以分成 inband 和 outband，ouband 会被接收 Filter 滤掉很大的一部分，相对于 inband 的block来说影响不会这么大，但对于AGC来说依然需要考虑不同的gain调整策略，而对于 inband 的block，整个接收链路需要定义出一个允许的最大block值，在该block值的范围内，整个接收链路不会饱和，特别是 ADC，因此会引入 SFDR(spurious free dynamic range)，在这里不对SFDR作过多理论解释，比如基于单tone，基于双tone以及基于noise的分析，同样以上面系统为例，</p>
+<p>假设天线端输入 <strong>-98dBm</strong> 的信号，此时所需链路增益为 57dB，经过接收链之后则得到的wanted信号为 -41dBm，系统有 3dB 的解调SNR，刚好可以解调，此时如果带内有一个block，该block同样也会经过57dB的增益，为了保证ADC不饱和，block最大不能超过-15dBm，则输入的最大block -72dBm，此时我们认为ADC的 SFDR 为 29 dBc</p>
+<p><img alt="adc_sfdr_example" src="../images/adc_sfdr_example.png" /></p>
+<p>综上，可以看出，ADC 信号的有效范围，或者说 AGC 调整的信号大小，下限取决于信号的解调信噪比，也就是不同大小信号要在链路不同增益时保证信号在解调信噪比以上，上限则取决于block的大小，要保证同样增益情况下，带内的block不会导致ADC饱和，当然这个能容忍的最大block值是系统定义时自己确定的，没有统一标准（WIFI协议的标准相对比较松）</p>
+<p>参考文献: <strong>Assessing the ADC SNR and SFDR for Communications Systems</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -679,14 +750,14 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "/", "features": [], "search": "/assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/assets/javascripts/bundle.13a4f30d.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
       
-        <script src="/javascripts/config.js"></script>
+        <script src="../../../javascripts/config.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
