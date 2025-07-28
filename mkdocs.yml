@@ -10,11 +10,14 @@ nav:
     - "802.11协议精读6: 802.11b的发送过程与接收过程": ieee80211_in_depth/ieee80211_protocol_study_6_11b_tx_rx.md
     - "802.11协议精读7: 802.11a/g的发送过程与接收过程": ieee80211_in_depth/ieee80211_protocol_study_7_11ag_tx_rx.md
     - "802.11协议精读8: 再论802.11a/g的发送过程与接收过程": ieee80211_in_depth/ieee80211_protocol_study_8_11ag_tx_rx_2.md
-  - "Wifi Modules":
+    - "802.11协议精读9: 初探节能模式(PS mode)与缓存机制": ieee80211_in_depth/ieee80211_protocol_study_9_ps_mode_and_buffer.md
+  - "WiFi Modules":
     - ADC:
       - "Wifi ADC Introduction": wifi_modules_intro/ADC/wifi_adc_intro.md
     - AGC:
       - "Wifi Rx AGC Introducion": wifi_modules_intro/AGC/wifi_rx_agc_intro.md
+  - "WiFi Reference":
+    - "reference links": wifi_reference/wifi_related_reference.md
 theme:
   name: material
 
